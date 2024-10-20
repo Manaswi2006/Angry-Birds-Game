@@ -1,5 +1,4 @@
 package com.badlogic.drop.Screens;
-
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,28 +9,24 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class ProfileMenu2Screen implements Screen {
-
+public class GameCompletedScreen implements Screen {
 
     //ATTRIBUTES
     private Angry_Birds_Game game;
+    private int level;
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
-    private final Rectangle User1ButtonBounds;
-    private final Rectangle User2ButtonBounds;
-    private final Rectangle GobackButtonBounds;
+    private final Rectangle MainMenuButtonBounds;
 
     //CONSTRUCTOR
-    public ProfileMenu2Screen(Angry_Birds_Game _game){
+    public GameCompletedScreen(Angry_Birds_Game _game){
         this.game = _game;
-        texture = new Texture("ProfileMenu2.png");
+        texture = new Texture("GameCompleted.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        User1ButtonBounds = new Rectangle(167,  1024 - 379 - 460, 441, 460);
-        User2ButtonBounds = new Rectangle(675, 1024 - 379 - 460, 441, 460);
-        GobackButtonBounds = new Rectangle(40, 1024 - 41 - 95, 146, 95);
+        MainMenuButtonBounds = new Rectangle(715, 1024 - 672 - 120, 350, 120);
     }
 
     //GETTERS AND SETTERS
@@ -50,6 +45,35 @@ public class ProfileMenu2Screen implements Screen {
     public void setTexture(Texture _texture) {
         this.texture = _texture;
     }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public OrthographicCamera getGamecam() {
+        return gamecam;
+    }
+
+    public Rectangle getMainMenuButtonBounds() {
+        return MainMenuButtonBounds;
+    }
+
+    public Viewport getGameport() {
+        return gameport;
+    }
+
+    public void setGamecam(OrthographicCamera gamecam) {
+        this.gamecam = gamecam;
+    }
+
+    public void setGameport(Viewport gameport) {
+        this.gameport = gameport;
+    }
+
     @Override
     public void show() {
 
@@ -74,19 +98,9 @@ public class ProfileMenu2Screen implements Screen {
             // Convert to world coordinates (invert Y-axis)
             touchY = gameport.getScreenHeight() - touchY;
 
-            // Check if the touch is within the settings button bounds
-            if (User1ButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to SettingScreen
-                dispose();
-            }
             // Check if the touch is within the level1 button bounds
-            else if (User2ButtonBounds.contains(touchX, touchY)) {
+            if (MainMenuButtonBounds.contains(touchX, touchY)) {
                 game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
-                dispose();
-            }
-
-            else if (GobackButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new FirstScreen(game)); // Navigate to Level1Screen
                 dispose();
             }
         }

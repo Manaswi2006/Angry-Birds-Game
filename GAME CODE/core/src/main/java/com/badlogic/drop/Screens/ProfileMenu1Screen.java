@@ -19,6 +19,7 @@ public class ProfileMenu1Screen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gameport;
     private final Rectangle User1ButtonBounds;
+    private final Rectangle GobackButtonBounds;
 
     //CONSTRUCTOR
     public ProfileMenu1Screen(Angry_Birds_Game _game){
@@ -28,6 +29,7 @@ public class ProfileMenu1Screen implements Screen {
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
         User1ButtonBounds = new Rectangle(167,  1024 - 379 - 460, 441, 460);
+        GobackButtonBounds = new Rectangle(40, 1024 - 41 - 95, 146, 95);
     }
 
     //GETTERS AND SETTERS
@@ -73,6 +75,11 @@ public class ProfileMenu1Screen implements Screen {
             // Check if the touch is within the settings button bounds
             if (User1ButtonBounds.contains(touchX, touchY)) {
                 game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to SettingScreen
+                dispose();
+            }
+
+            else if (GobackButtonBounds.contains(touchX, touchY)) {
+                game.setScreen(new FirstScreen(game)); // Navigate to Level1Screen
                 dispose();
             }
         }

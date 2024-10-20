@@ -21,6 +21,7 @@ public class LevelsMenuAllScreen implements Screen {
     private final Rectangle Level1ButtonBounds;
     private final Rectangle Level2ButtonBounds;
     private final Rectangle Level3ButtonBounds;
+    private final Rectangle GobackButtonBounds;
 
     //CONSTRUCTOR
     public LevelsMenuAllScreen(Angry_Birds_Game _game){
@@ -32,6 +33,7 @@ public class LevelsMenuAllScreen implements Screen {
         Level1ButtonBounds = new Rectangle(167,  1024 - 379 - 460, 441, 460);
         Level2ButtonBounds = new Rectangle(675, 1024 - 379 - 460, 441, 460);
         Level3ButtonBounds = new Rectangle(1183, 1024 - 379 - 460, 441, 460);
+        GobackButtonBounds = new Rectangle(40, 1024 - 41 - 95, 146, 95);
     }
 
     //GETTERS AND SETTERS
@@ -88,6 +90,11 @@ public class LevelsMenuAllScreen implements Screen {
             // Check if the touch is within the level1 button bounds
             else if (Level3ButtonBounds.contains(touchX, touchY)) {
                 game.setScreen(new Level3Screen(game)); // Navigate to Level1Screen
+                dispose();
+            }
+
+            else if (GobackButtonBounds.contains(touchX, touchY)) {
+                game.setScreen(new ProfileMenuAllScreen(game)); // Navigate to Level1Screen
                 dispose();
             }
         }

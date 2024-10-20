@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -17,6 +18,8 @@ public class LevelsMenu1Screen implements Screen {
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
+    private final Rectangle Level1ButtonBounds;
+    private final Rectangle GobackButtonBounds;
 
     //CONSTRUCTOR
     public LevelsMenu1Screen(Angry_Birds_Game _game){
@@ -25,6 +28,8 @@ public class LevelsMenu1Screen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
+        Level1ButtonBounds = new Rectangle(167,  1024 - 379 - 460, 441, 460);
+        GobackButtonBounds = new Rectangle(40, 1024 - 41 - 95, 146, 95);
     }
 
     //GETTERS AND SETTERS
@@ -56,8 +61,29 @@ public class LevelsMenu1Screen implements Screen {
         game.getBatch().begin();
         game.getBatch().draw(texture, 0, 0);
         game.getBatch().end();
+        handleInput();
     }
 
+    private void handleInput() {
+        if (Gdx.input.justTouched()) {
+            float touchX = Gdx.input.getX();
+            float touchY = Gdx.input.getY();
+
+            // Convert to world coordinates (invert Y-axis)
+            touchY = gameport.getScreenHeight() - touchY;
+
+            // Check if the touch is within the settings button bounds
+            if (Level1ButtonBounds.contains(touchX, touchY)) {
+                game.setScreen(new Level1Screen(game)); // Navigate to SettingScreen
+                dispose();
+            }
+
+            else if (GobackButtonBounds.contains(touchX, touchY)) {
+                game.setScreen(new ProfileMenuAllScreen(game)); // Navigate to Level1Screen
+                dispose();
+            }
+        }
+    }
     @Override
     public void resize(int width, int height) {
         gameport.update(width,height);

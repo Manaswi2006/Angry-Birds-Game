@@ -15,6 +15,7 @@ public class FirstScreen implements Screen {
 
     //ATTRIBUTES
     private Angry_Birds_Game game;
+    private int profiles;
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
@@ -25,6 +26,7 @@ public class FirstScreen implements Screen {
     //CONSTRUCTOR
     public FirstScreen(Angry_Birds_Game _game){
         this.game = _game;
+        this.profiles = 0;
         texture = new Texture("Background.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
@@ -48,6 +50,46 @@ public class FirstScreen implements Screen {
 
     public void setTexture(Texture _texture) {
         this.texture = _texture;
+    }
+
+    public void setGameport(Viewport gameport) {
+        this.gameport = gameport;
+    }
+
+    public Viewport getGameport() {
+        return gameport;
+    }
+
+    public OrthographicCamera getGamecam() {
+        return gamecam;
+    }
+
+    public void setGamecam(OrthographicCamera gamecam) {
+        this.gamecam = gamecam;
+    }
+
+    public int getProfiles() {
+        return profiles;
+    }
+
+    public Rectangle getLevel1ButtonBounds() {
+        return level1ButtonBounds;
+    }
+
+    public Rectangle getSettingsButtonBounds() {
+        return settingsButtonBounds;
+    }
+
+    public void setLevel1ButtonBounds(Rectangle level1ButtonBounds) {
+        this.level1ButtonBounds = level1ButtonBounds;
+    }
+
+    public void setProfiles(int profiles) {
+        this.profiles = profiles;
+    }
+
+    public void setSettingsButtonBounds(Rectangle settingsButtonBounds) {
+        this.settingsButtonBounds = settingsButtonBounds;
     }
 
     //METHODS
