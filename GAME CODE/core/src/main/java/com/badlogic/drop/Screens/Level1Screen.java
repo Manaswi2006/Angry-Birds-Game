@@ -1,13 +1,12 @@
-package com.badlogic.drop;
+package com.badlogic.drop.Screens;
 
+import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Level1Screen implements Screen {
@@ -83,6 +82,6 @@ public class Level1Screen implements Screen {
 
     @Override
     public void dispose() {
-
+        texture.dispose();
     }
 }
