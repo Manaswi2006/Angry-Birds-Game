@@ -1,5 +1,4 @@
 package com.badlogic.drop.Screens;
-
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
