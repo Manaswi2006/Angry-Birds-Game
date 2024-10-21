@@ -2,6 +2,7 @@ package com.badlogic.drop.Screens;
 
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,26 +12,26 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.awt.*;
 
-public class Level2Screen implements Screen {
-
-    //ATTRIBUTES
+public class LoadingScreen implements Screen {
     private Angry_Birds_Game game;
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
-    private final Rectangle GoBackButton;
-
-    //CONSTRUCTOR
-    public Level2Screen(Angry_Birds_Game _game){
+   // private final Rectangle GoBackButtonBounds;
+    public  LoadingScreen(Angry_Birds_Game _game){
         this.game = _game;
-        texture = new Texture("Level2.png");
+        texture = new Texture("loadingscreenn.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        GoBackButton = new Rectangle(19, 1024 - 35 - 136 , 133 , 133);
-    }
 
-    //GETTERS AND SETTERS
+
+
+    }
+    @Override
+    public void show() {
+
+    }
     public Angry_Birds_Game getGame(){
         return game;
     }
@@ -47,45 +48,30 @@ public class Level2Screen implements Screen {
         this.texture = _texture;
     }
 
-    //METHODS
     @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0,1);
+    public void render(float v) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Set the camera and batch projection
         game.getBatch().setProjectionMatrix(gamecam.combined);
+
+        // Draw the loading screen texture
         game.getBatch().begin();
         game.getBatch().draw(texture, 0, 0);
         game.getBatch().end();
-        handleInput();
 
+        // Handle input: Move to FirstScreen if ENTER is pressed
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            game.setScreen(new FirstScreen(game));
+            dispose();
+
+        }
     }
-
     @Override
     public void resize(int width, int height) {
-        gameport.update(width,height);
-        // Resize your screen here. The parameters represent the new window size.
-    }
-    private void handleInput() {
-        if (Gdx.input.justTouched()) {
-            float touchX = Gdx.input.getX();
-            float touchY = Gdx.input.getY();
+            gameport.update(width,height);
 
-            // Convert to world coordinates (invert Y-axis)
-            touchY = gameport.getScreenHeight() - touchY;
-
-            // Check if the touch is within the settings button bounds
-
-
-            if (GoBackButton.contains(touchX, touchY)) {
-                game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
-                dispose();
-            }
-        }
     }
 
     @Override
@@ -106,5 +92,6 @@ public class Level2Screen implements Screen {
     @Override
     public void dispose() {
         texture.dispose();
+
     }
 }

@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.awt.*;
+
 public class Level3Screen implements Screen {
 
     //ATTRIBUTES
@@ -16,6 +18,7 @@ public class Level3Screen implements Screen {
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
+    private final Rectangle GoBackButton;
 
     //CONSTRUCTOR
     public Level3Screen(Angry_Birds_Game _game){
@@ -24,6 +27,7 @@ public class Level3Screen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
+        GoBackButton = new Rectangle(35, 1024 - 35 - 135 , 134 , 135);
     }
 
     //GETTERS AND SETTERS
@@ -57,6 +61,23 @@ public class Level3Screen implements Screen {
         game.getBatch().begin();
         game.getBatch().draw(texture, 0, 0);
         game.getBatch().end();
+        handleInput();
+    }
+    private void handleInput() {
+        if (Gdx.input.justTouched()) {
+            float touchX = Gdx.input.getX();
+            float touchY = Gdx.input.getY();
+
+            // Convert to world coordinates (invert Y-axis)
+            touchY = gameport.getScreenHeight() - touchY;
+
+
+
+            if (GoBackButton.contains(touchX, touchY)) {
+                game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
+                dispose();
+            }
+        }
     }
 
     @Override

@@ -21,6 +21,7 @@ public class FirstScreen implements Screen {
     private Viewport gameport;
     private Rectangle settingsButtonBounds;
     private Rectangle level1ButtonBounds;
+    private Rectangle playnewgame ;
 
 
     //CONSTRUCTOR
@@ -33,6 +34,7 @@ public class FirstScreen implements Screen {
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
         settingsButtonBounds = new Rectangle(648,  1024 - 775 - 76, 495, 76);
         level1ButtonBounds = new Rectangle(648, 1024 - 653 - 76, 495, 76);
+        playnewgame = new Rectangle(648, 1024 - 512 - 77 , 476 , 77);
     }
 
     //GETTERS AND SETTERS
@@ -114,6 +116,10 @@ public class FirstScreen implements Screen {
             // Check if the touch is within the level1 button bounds
             else if (level1ButtonBounds.contains(touchX, touchY)) {
                 game.setScreen(new ProfileMenuAllScreen(game)); // Navigate to Level1Screen
+                dispose();
+            }
+            else if(playnewgame.contains(touchX,touchY)){
+                game.setScreen(new Playnewgame(game));
                 dispose();
             }
         }

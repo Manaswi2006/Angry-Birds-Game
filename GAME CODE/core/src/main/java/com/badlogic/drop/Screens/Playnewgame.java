@@ -2,6 +2,8 @@ package com.badlogic.drop.Screens;
 
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,38 +14,56 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class ProfileMenuAllScreen implements Screen {
+import static com.badlogic.gdx.graphics.Color.BLACK;
+import static com.badlogic.gdx.graphics.Color.WHITE;
 
-
-    //ATTRIBUTES
+public class Playnewgame implements Screen {
     private Angry_Birds_Game game;
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
-    private final Rectangle User1ButtonBounds;
-    private final Rectangle User2ButtonBounds;
-    private final Rectangle User3ButtonBounds;
-    private final Rectangle GobackButtonBounds;
-    private BitmapFont font;
-    private String[] profiles = {"user 1 ", "user 2", "user 3 "};
+    private final Rectangle GoBackButtonBounds;
+    private final Rectangle nextbuttonbounds;
+    private String playername = "";
+    private BitmapFont font ;
 
-    //CONSTRUCTOR
-    public ProfileMenuAllScreen(Angry_Birds_Game _game){
+
+    public  Playnewgame(Angry_Birds_Game _game){
         this.game = _game;
-        texture = new Texture("ProfileMenuAll.png");
+        texture = new Texture("newprofile.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        User1ButtonBounds = new Rectangle(167,  1024 - 379 - 460, 441, 460);
-        User2ButtonBounds = new Rectangle(675, 1024 - 379 - 460, 441, 460);
-        User3ButtonBounds = new Rectangle(1183, 1024 - 379 - 460, 441, 460);
-        GobackButtonBounds = new Rectangle(40, 1024 - 41 - 95, 146, 95);
+        GoBackButtonBounds = new Rectangle(35 , 1024 - 35 - 135 , 134 , 135);
+        nextbuttonbounds = new Rectangle(1615, 1024 - 847 - 149 , 148 , 149);
         font = new BitmapFont();
-        font.setColor((Color.WHITE));
-        font.getData().setScale(2);
-    }
+        font.setColor(BLACK);
+      //  promptname();
 
-    //GETTERS AND SETTERS
+
+
+
+    }
+    private void promptname(){
+        Gdx.input.getTextInput(new TextInputListener(){
+            @Override
+            public void input(String s) {
+                playername = s;
+
+            }
+
+            @Override
+            public void canceled() {
+                playername = "";
+
+            }
+        },"hey","","op");
+    }
+    @Override
+    public void show() {
+        promptname();
+
+    }
     public Angry_Birds_Game getGame(){
         return game;
     }
@@ -59,28 +79,29 @@ public class ProfileMenuAllScreen implements Screen {
     public void setTexture(Texture _texture) {
         this.texture = _texture;
     }
-    @Override
-    public void show() {
-
-    }
 
     @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0,1);
+    public void render(float v) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Set the camera and batch projection
         game.getBatch().setProjectionMatrix(gamecam.combined);
+
+        // Draw the loading screen texture
         game.getBatch().begin();
         game.getBatch().draw(texture, 0, 0);
-        //drawingg names on each box
-        font.draw(game.getBatch(),profiles[0],218,515);
-        font.draw(game.getBatch(),profiles[1],730,512);
-        font.draw(game.getBatch(),profiles[2],1217,515);
+        font.draw(game.getBatch(),""+playername,508,405);
         game.getBatch().end();
-        handleInput();
+
+        handleinput();
+
+       // handleKeyboardInput();
+
+        // Handle input: Move to FirstScreen if ENTER is pressed
+
     }
-
-
-    private void handleInput() {
+    private void handleinput(){
         if (Gdx.input.justTouched()) {
             float touchX = Gdx.input.getX();
             float touchY = Gdx.input.getY();
@@ -89,34 +110,25 @@ public class ProfileMenuAllScreen implements Screen {
             touchY = gameport.getScreenHeight() - touchY;
 
             // Check if the touch is within the settings button bounds
-            if (User1ButtonBounds.contains(touchX, touchY)) {
-                game.setActiveprofile(profiles[0]);
-                game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to SettingScreen
+            if (GoBackButtonBounds.contains(touchX, touchY)) {
+                game.setScreen(new FirstScreen(game)); // Navigate to SettingScreen
                 dispose();
             }
             // Check if the touch is within the level1 button bounds
-            else if (User2ButtonBounds.contains(touchX, touchY)) {
-                game.setActiveprofile(profiles[1]);
+            else if (nextbuttonbounds.contains(touchX, touchY)) {
+                if(!playername.isEmpty()){
+                    game.addprofile(playername);}
                 game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
-                dispose();
-            }
-
-            else if (User3ButtonBounds.contains(touchX, touchY)) {
-                game.setActiveprofile(profiles[2]);
-                game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
-                dispose();
-            }
-
-            else if (GobackButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new FirstScreen(game)); // Navigate to Level1Screen
                 dispose();
             }
         }
     }
+
+
     @Override
     public void resize(int width, int height) {
         gameport.update(width,height);
-        // Resize your screen here. The parameters represent the new window size.
+
     }
 
     @Override
@@ -138,5 +150,8 @@ public class ProfileMenuAllScreen implements Screen {
     public void dispose() {
         texture.dispose();
         font.dispose();
+
     }
+
+
 }
