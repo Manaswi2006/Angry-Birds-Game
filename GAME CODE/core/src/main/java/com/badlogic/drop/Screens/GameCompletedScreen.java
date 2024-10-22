@@ -26,7 +26,7 @@ public class GameCompletedScreen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        MainMenuButtonBounds = new Rectangle(715, 1024 - 672 - 120, 350, 120);
+        MainMenuButtonBounds = new Rectangle(756, 1024 - 775 - 112, 320, 112);
     }
 
     //GETTERS AND SETTERS

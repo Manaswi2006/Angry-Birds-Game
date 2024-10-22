@@ -30,10 +30,10 @@ public class LevelsMenuAllScreen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        Level1ButtonBounds = new Rectangle(167,  1024 - 379 - 460, 441, 460);
-        Level2ButtonBounds = new Rectangle(675, 1024 - 379 - 460, 441, 460);
-        Level3ButtonBounds = new Rectangle(1183, 1024 - 379 - 460, 441, 460);
-        GobackButtonBounds = new Rectangle(40, 1024 - 41 - 95, 146, 95);
+        Level1ButtonBounds = new Rectangle(682,  1024 - 439 - 125, 426, 125);
+        Level2ButtonBounds = new Rectangle(682, 1024 - 589 - 125, 426, 125);
+        Level3ButtonBounds = new Rectangle(682, 1024 - 738 - 125, 426, 125);
+        GobackButtonBounds = new Rectangle(35, 1024 - 35 - 135 , 134 , 135);
     }
 
     //GETTERS AND SETTERS

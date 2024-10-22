@@ -34,10 +34,10 @@ public class ProfileMenuAllScreen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        User1ButtonBounds = new Rectangle(167,  1024 - 379 - 460, 441, 460);
-        User2ButtonBounds = new Rectangle(675, 1024 - 379 - 460, 441, 460);
-        User3ButtonBounds = new Rectangle(1183, 1024 - 379 - 460, 441, 460);
-        GobackButtonBounds = new Rectangle(40, 1024 - 41 - 95, 146, 95);
+        User1ButtonBounds = new Rectangle(693,  1024 - 467 - 104, 426, 104);
+        User2ButtonBounds = new Rectangle(693, 1024 - 605 - 104, 426, 104);
+        User3ButtonBounds = new Rectangle(693, 1024 - 744 - 104, 426, 104);
+        GobackButtonBounds = new Rectangle(35, 1024 - 35 - 135 , 134 , 135);
         font = new BitmapFont();
         font.setColor((Color.WHITE));
         font.getData().setScale(2);
@@ -72,9 +72,9 @@ public class ProfileMenuAllScreen implements Screen {
         game.getBatch().begin();
         game.getBatch().draw(texture, 0, 0);
         //drawingg names on each box
-        font.draw(game.getBatch(),profiles[0],218,515);
-        font.draw(game.getBatch(),profiles[1],730,512);
-        font.draw(game.getBatch(),profiles[2],1217,515);
+        font.draw(game.getBatch(),profiles[0],850,1024 - 467 -35);
+        font.draw(game.getBatch(),profiles[1],850,1024 -(605+35));
+        font.draw(game.getBatch(),profiles[2],850,1024 - (744+ 35));
         game.getBatch().end();
         handleInput();
     }

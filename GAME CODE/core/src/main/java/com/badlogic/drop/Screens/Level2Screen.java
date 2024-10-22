@@ -19,6 +19,8 @@ public class Level2Screen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gameport;
     private final Rectangle GoBackButton;
+    private final Rectangle GiveUpButtonBounds;
+
 
     //CONSTRUCTOR
     public Level2Screen(Angry_Birds_Game _game){
@@ -28,6 +30,7 @@ public class Level2Screen implements Screen {
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
         GoBackButton = new Rectangle(19, 1024 - 35 - 136 , 133 , 133);
+        GiveUpButtonBounds = new Rectangle(1521 , 1024 -47 -110 ,228 ,110);
     }
 
     //GETTERS AND SETTERS
@@ -83,6 +86,14 @@ public class Level2Screen implements Screen {
 
             if (GoBackButton.contains(touchX, touchY)) {
                 game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
+                dispose();
+            }
+            else if (GiveUpButtonBounds.contains(touchX, touchY)) {
+                game.setScreen(new GameLostScreen(game,2)); // Navigate to Level1Screen
+                dispose();
+            }
+            else{
+                game.setScreen(new GameWonScreen(game,2)); // Navigate to Level1Screen
                 dispose();
             }
         }

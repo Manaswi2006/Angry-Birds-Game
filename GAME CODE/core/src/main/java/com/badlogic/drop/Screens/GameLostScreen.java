@@ -25,7 +25,7 @@ public class GameLostScreen implements Screen {
     public GameLostScreen(Angry_Birds_Game _game, int _level){
         this.game = _game;
         this.level = _level;
-        texture = new Texture("GameWon.png");
+        texture = new Texture("GameLost.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
