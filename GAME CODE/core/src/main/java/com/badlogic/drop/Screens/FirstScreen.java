@@ -32,9 +32,9 @@ public class FirstScreen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        settingsButtonBounds = new Rectangle(648,  1024 - 775 - 76, 495, 76);
-        level1ButtonBounds = new Rectangle(648, 1024 - 653 - 76, 495, 76);
-        playnewgame = new Rectangle(648, 1024 - 512 - 77 , 476 , 77);
+        settingsButtonBounds = new Rectangle(564,  1024 - 669 - 162, 577, 162);
+        level1ButtonBounds = new Rectangle(564, 1024 - 501 - 165, 577, 165);
+        playnewgame = new Rectangle(564, 1024 -338 - 163 , 577 , 163); // x , 1024 = y - h , w , h
     }
 
     //GETTERS AND SETTERS
