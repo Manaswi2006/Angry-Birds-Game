@@ -6,10 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.awt.*;
+//import java.awt.*;
 
 public class Termsandcondition implements Screen {
     private Angry_Birds_Game game;
@@ -23,6 +24,7 @@ public class Termsandcondition implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
+       // gamecam.update();
         GoBackButtonBounds = new Rectangle(35 , 1024 -35 -134 ,133 ,134);
     }
     public Angry_Birds_Game getGame(){
@@ -81,7 +83,9 @@ public class Termsandcondition implements Screen {
 
 
     @Override
-    public void resize(int i, int i1) {
+    public void resize(int width, int height) {
+        gameport.update(width,height);
+        //haha
 
     }
 
