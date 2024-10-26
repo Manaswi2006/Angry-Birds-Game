@@ -1,5 +1,4 @@
 package com.badlogic.drop.Screens;
-
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,28 +10,27 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.awt.*;
 
-public class Level2Screen implements Screen {
+public class Pause3screen implements Screen {
 
-    private final Rectangle pause;
     //ATTRIBUTES
     private Angry_Birds_Game game;
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
-    private final Rectangle GoBackButton;
-    private final Rectangle GiveUpButtonBounds;
-
+    private final Rectangle play;
+    private final Rectangle mainmenu;
+    private final Rectangle replay;
 
     //CONSTRUCTOR
-    public Level2Screen(Angry_Birds_Game _game){
+    public Pause3screen(Angry_Birds_Game _game){
         this.game = _game;
-        texture = new Texture("Level2.png");
+        texture = new Texture("Level1.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        GoBackButton = new Rectangle(19, 1024 - 35 - 136 , 133 , 133);
-        GiveUpButtonBounds = new Rectangle(1521 , 1024 -47 -110 ,228 ,110);
-        pause = new Rectangle(209 , 1024 - 25 - 171, 164 , 171);
+        play = new Rectangle(753 , 1024 -364 -294 ,282 ,294);
+        mainmenu = new Rectangle(753 , 1024 -364 - 294  ,282 ,294);
+        replay = new Rectangle(415 , 1024 - 364 - 294 , 960 , 264);
     }
 
     //GETTERS AND SETTERS
@@ -67,13 +65,6 @@ public class Level2Screen implements Screen {
         game.getBatch().draw(texture, 0, 0);
         game.getBatch().end();
         handleInput();
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        gameport.update(width,height);
-        // Resize your screen here. The parameters represent the new window size.
     }
     private void handleInput() {
         if (Gdx.input.justTouched()) {
@@ -86,23 +77,27 @@ public class Level2Screen implements Screen {
             // Check if the touch is within the settings button bounds
 
 
-            if (GoBackButton.contains(touchX, touchY)) {
+            if (mainmenu.contains(touchX, touchY)) {
                 game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
                 dispose();
             }
-            else if (GiveUpButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new GameLostScreen(game,2)); // Navigate to Level1Screen
+            else if (play.contains(touchX, touchY)) {
+                game.setScreen(new Level3Screen(game)); // Navigate to Level1Screen
                 dispose();
-            } else if (pause.contains(touchX,touchY)) {
-                game.setScreen(new Pause2screen(game));
-                dispose();
-
-            } else{
-                game.setScreen(new GameWonScreen(game,2)); // Navigate to Level1Screen
+            }
+            else if (replay.contains(touchX, touchY)) {
+                game.setScreen(new Level3Screen(game));// Navigate to Level1Screen
                 dispose();
             }
         }
     }
+
+    @Override
+    public void resize(int width, int height) {
+        gameport.update(width,height);
+        // Resize your screen here. The parameters represent the new window size.
+    }
+
 
     @Override
     public void pause() {

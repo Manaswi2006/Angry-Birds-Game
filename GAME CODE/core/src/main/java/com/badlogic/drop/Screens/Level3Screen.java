@@ -13,6 +13,7 @@ import java.awt.*;
 
 public class Level3Screen implements Screen {
 
+    private final Rectangle pause;
     //ATTRIBUTES
     private Angry_Birds_Game game;
     Texture texture;
@@ -30,6 +31,7 @@ public class Level3Screen implements Screen {
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
         GoBackButton = new Rectangle(35, 1024 - 35 - 135 , 134 , 135);
         GiveUpButtonBounds = new Rectangle(1521 , 1024 -47 -110 ,228 ,110);
+        pause = new Rectangle(224, 1024 - 25 - 171 , 164 , 171);
     }
 
     //GETTERS AND SETTERS
@@ -82,8 +84,11 @@ public class Level3Screen implements Screen {
             else if (GiveUpButtonBounds.contains(touchX, touchY)) {
                 game.setScreen(new GameLostScreen(game,3)); // Navigate to Level1Screen
                 dispose();
-            }
-            else{
+            } else if (pause.contains(touchX,touchY)) {
+                game.setScreen(new Pause3screen(game));
+                dispose();
+
+            } else{
                 game.setScreen(new GameCompletedScreen(game)); // Navigate to Level1Screen
                 dispose();
             }
