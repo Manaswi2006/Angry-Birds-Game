@@ -24,13 +24,13 @@ public class Pause3screen implements Screen {
     //CONSTRUCTOR
     public Pause3screen(Angry_Birds_Game _game){
         this.game = _game;
-        texture = new Texture("Level1.png");
+        texture = new Texture("pause3.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
         play = new Rectangle(753 , 1024 -364 -294 ,282 ,294);
-        mainmenu = new Rectangle(753 , 1024 -364 - 294  ,282 ,294);
-        replay = new Rectangle(415 , 1024 - 364 - 294 , 960 , 264);
+        replay = new Rectangle(1060, 1024 -364 - 294  ,282 ,294);
+        mainmenu = new Rectangle(415 , 1024 - 364 - 294 , 282 , 294);
     }
 
     //GETTERS AND SETTERS
@@ -75,8 +75,6 @@ public class Pause3screen implements Screen {
             touchY = gameport.getScreenHeight() - touchY;
 
             // Check if the touch is within the settings button bounds
-
-
             if (mainmenu.contains(touchX, touchY)) {
                 game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
                 dispose();

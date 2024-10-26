@@ -6,14 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.awt.*;
-
 public class Level2Screen implements Screen {
 
-    private final Rectangle pause;
     //ATTRIBUTES
     private Angry_Birds_Game game;
     Texture texture;
@@ -21,6 +19,7 @@ public class Level2Screen implements Screen {
     private Viewport gameport;
     private final Rectangle GoBackButton;
     private final Rectangle GiveUpButtonBounds;
+    private final Rectangle pause;
 
 
     //CONSTRUCTOR

@@ -1,25 +1,31 @@
 package com.badlogic.drop.Screens;
 import com.badlogic.drop.Angry_Birds_Game;
+import com.badlogic.drop.Sprites.Bird;
+import com.badlogic.drop.Sprites.Slingshot;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.awt.*;
 
 public class Level1Screen implements Screen {
 
-    private final Rectangle pause;
     //ATTRIBUTES
     private Angry_Birds_Game game;
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
+    private Bird bird1;
+    private Bird bird2;
+    private Bird bird3;
+    private Slingshot Slingshot;
     private final Rectangle GoBackButtonBounds;
     private final Rectangle GiveUpButtonBounds;
+    private final Rectangle pause;
 
     //CONSTRUCTOR
     public Level1Screen(Angry_Birds_Game _game){
@@ -28,9 +34,13 @@ public class Level1Screen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
+        bird1 = new Bird(_game,250,175);
+        bird2 = new Bird(_game,375,175);
+        bird3 = new Bird(_game,520,350);
+        Slingshot = new Slingshot(_game,500,160);
         GoBackButtonBounds = new Rectangle(35 , 1024 -35 -134 ,133 ,134);
         GiveUpButtonBounds = new Rectangle(1521 , 1024 -47 -110 ,228 ,110);
-        pause = new Rectangle(230 , 1024 - 26 - 171 , 164 , 171);
+        pause = new Rectangle(230 , 1024 - 26 - 134 , 164 , 171);
     }
 
     //GETTERS AND SETTERS
@@ -63,9 +73,14 @@ public class Level1Screen implements Screen {
         game.getBatch().setProjectionMatrix(gamecam.combined);
         game.getBatch().begin();
         game.getBatch().draw(texture, 0, 0);
+        bird1.render();
+        bird2.render();
+        Slingshot.render();
+        bird3.render();
         game.getBatch().end();
         handleInput();
     }
+
     private void handleInput() {
         if (Gdx.input.justTouched()) {
             float touchX = Gdx.input.getX();
@@ -75,8 +90,6 @@ public class Level1Screen implements Screen {
             touchY = gameport.getScreenHeight() - touchY;
 
             // Check if the touch is within the settings button bounds
-
-
             if (GoBackButtonBounds.contains(touchX, touchY)) {
                 game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
                 dispose();
@@ -84,10 +97,12 @@ public class Level1Screen implements Screen {
             else if (GiveUpButtonBounds.contains(touchX, touchY)) {
                 game.setScreen(new GameLostScreen(game,1)); // Navigate to Level1Screen
                 dispose();
-            } else if (pause.contains(touchX,touchY)) {
+            }
+            else if (pause.contains(touchX,touchY)) {
                 game.setScreen(new Pause1screen(game));
-
-            } else{
+                dispose();
+            }
+            else{
                 game.setScreen(new GameWonScreen(game,1)); // Navigate to Level1Screen
                 dispose();
             }
