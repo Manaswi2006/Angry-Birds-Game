@@ -2,8 +2,10 @@ package com.badlogic.drop.Screens;
 
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.drop.Sprites.Bird;
+import com.badlogic.drop.Sprites.Red_Bird;
 import com.badlogic.drop.Sprites.Slingshot;
 import com.badlogic.drop.Scenes.TowerGenerator;
+import com.badlogic.drop.Sprites.Yellow_Bird;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,9 +22,9 @@ public class Level2Screen implements Screen {
     private Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
-    private Bird bird1;
-    private Bird bird2;
-    private Bird bird3;
+    private Red_Bird bird1;
+    private Yellow_Bird bird2;
+    private Yellow_Bird bird3;
     private Slingshot slingshot;
     private TowerGenerator towerGenerator;
 
@@ -41,9 +43,9 @@ public class Level2Screen implements Screen {
         getGamecam().position.set(1792 / 2f, 1024 / 2f, 0);
 
         // Initialize birds and slingshot
-        setBird1(new Bird(getGame(), 265, 300));
-        setBird2(new Bird(getGame(), 350, 300));
-        setBird3(new Bird(getGame(), 425, 400));
+        setBird1(new Red_Bird(getGame(), 265, 300));
+        setBird2(new Yellow_Bird(getGame(), 350, 300));
+        setBird3(new Yellow_Bird(getGame(), 425, 400));
         setSlingshot(new Slingshot(getGame(), 400, 300));
 
         // Initialize TowerGenerator and generate tower
@@ -94,7 +96,7 @@ public class Level2Screen implements Screen {
     }
 
     public void setBird1(Bird bird1) {
-        this.bird1 = bird1;
+        this.bird1 = (Red_Bird) bird1;
     }
 
     public Bird getBird2() {
@@ -102,7 +104,7 @@ public class Level2Screen implements Screen {
     }
 
     public void setBird2(Bird bird2) {
-        this.bird2 = bird2;
+        this.bird2 = (Yellow_Bird) bird2;
     }
 
     public Bird getBird3() {
@@ -110,7 +112,7 @@ public class Level2Screen implements Screen {
     }
 
     public void setBird3(Bird bird3) {
-        this.bird3 = bird3;
+        this.bird3 = (Yellow_Bird) bird3;
     }
 
     public Slingshot getSlingshot() {

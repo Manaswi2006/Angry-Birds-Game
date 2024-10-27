@@ -2,6 +2,7 @@ package com.badlogic.drop.Screens;
 
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.drop.Sprites.Bird;
+import com.badlogic.drop.Sprites.Red_Bird;
 import com.badlogic.drop.Sprites.Slingshot;
 import com.badlogic.drop.Scenes.TowerGenerator;
 import com.badlogic.gdx.Gdx;
@@ -20,9 +21,9 @@ public class Level1Screen implements Screen {
     private Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
-    private Bird bird1;
-    private Bird bird2;
-    private Bird bird3;
+    private Red_Bird bird1;
+    private Red_Bird bird2;
+    private Red_Bird bird3;
     private Slingshot slingshot;
     private TowerGenerator towerGenerator;
 
@@ -41,9 +42,9 @@ public class Level1Screen implements Screen {
         getGamecam().position.set(1792 / 2f, 1024 / 2f, 0);
 
         // Initialize birds and slingshot
-        setBird1(new Bird(getGame(), 265, 250));
-        setBird2(new Bird(getGame(), 350, 250));
-        setBird3(new Bird(getGame(), 425, 350));
+        setBird1(new Red_Bird(getGame(), 265, 250));
+        setBird2(new Red_Bird(getGame(), 350, 250));
+        setBird3(new Red_Bird(getGame(), 425, 350));
         setSlingshot(new Slingshot(getGame(), 400, 240));
 
         // Initialize TowerGenerator and generate tower
@@ -94,7 +95,7 @@ public class Level1Screen implements Screen {
     }
 
     public void setBird1(Bird bird1) {
-        this.bird1 = bird1;
+        this.bird1 = (Red_Bird) bird1;
     }
 
     public Bird getBird2() {
@@ -102,7 +103,7 @@ public class Level1Screen implements Screen {
     }
 
     public void setBird2(Bird bird2) {
-        this.bird2 = bird2;
+        this.bird2 = (Red_Bird) bird2;
     }
 
     public Bird getBird3() {
@@ -110,7 +111,7 @@ public class Level1Screen implements Screen {
     }
 
     public void setBird3(Bird bird3) {
-        this.bird3 = bird3;
+        this.bird3 = (Red_Bird) bird3;
     }
 
     public Slingshot getSlingshot() {

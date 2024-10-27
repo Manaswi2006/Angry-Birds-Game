@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Bird {
+public abstract class Bird {
     private Sprite birdSprite;
     private SpriteBatch batch;
 
-    public Bird(Angry_Birds_Game game, float x, float y) {
+    public Bird(Angry_Birds_Game game, float x, float y, String texturePath) {
         this.batch = game.getBatch();
-        Texture birdTexture = new Texture("Red_Bird.png");  // Replace with actual bird image path
+        Texture birdTexture = new Texture(texturePath);  // Replace with actual bird image path
         birdSprite = new Sprite(birdTexture);
         birdSprite.setPosition(x, y);  // Set initial coordinates
     }
