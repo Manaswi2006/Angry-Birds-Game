@@ -33,12 +33,30 @@ public class TowerGenerator {
         }
 
         // Place multiple pigs on random blocks
+        // Place multiple pigs on random blocks
         int numPigs = random.nextInt(3) + 2; // Place between 2 and 4 pigs
         for (int k = 0; k < numPigs; k++) {
             int pigPosition = random.nextInt(blockTower.size);
             Blocks pigBlock = blockTower.get(pigPosition);
-            Pig pig = new Pig(game, pigBlock.getBlockSprite().getX() + 20, pigBlock.getBlockSprite().getY() + 20);
+
+            // Generate a random pig
+            Pig pig = createRandomPig(pigBlock.getBlockSprite().getX() + 15, pigBlock.getBlockSprite().getY() + 18, random);
             pigs.add(pig);
+        }
+    }
+
+    // Helper method to create a random pig type
+    private Pig createRandomPig(float x, float y, Random random) {
+        int pigType = random.nextInt(3);
+        switch (pigType) {
+            case 0:
+                return new Pig_1(game, x, y);
+            case 1:
+                return new Pig_2(game, x, y);
+            case 2:
+                return new Pig_3(game, x, y);
+            default:
+                return new Pig_1(game, x, y); // Default to Pig_1 if something unexpected occurs
         }
     }
 
