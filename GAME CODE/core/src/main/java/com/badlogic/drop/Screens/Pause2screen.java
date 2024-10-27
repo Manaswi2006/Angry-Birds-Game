@@ -75,8 +75,6 @@ public class Pause2screen implements Screen {
             touchY = gameport.getScreenHeight() - touchY;
 
             // Check if the touch is within the settings button bounds
-
-
             if (mainmenu.contains(touchX, touchY)) {
                 game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
                 dispose();

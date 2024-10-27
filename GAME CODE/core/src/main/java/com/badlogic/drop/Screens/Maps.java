@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Maps implements Screen {
 
-
     //ATTRIBUTES
     private Angry_Birds_Game game;
     Texture texture;
@@ -33,7 +32,8 @@ public class Maps implements Screen {
         Level1ButtonBounds = new Rectangle(655,  1024 - 431 - 170 , 153, 170);
         Level2ButtonBounds = new Rectangle(950, 1024 - 313 - 182, 164 , 182);
         Level3ButtonBounds = new Rectangle(896 , 1024 - 34 - 137 , 123 , 137);
-        GobackButtonBounds = new Rectangle(187, 1024 - 190 - 165  , 158 , 165);
+        GobackButtonBounds = new Rectangle(35, 1024 - 35 - 135 , 134 , 135);
+        //GobackButtonBounds = new Rectangle(187, 1024 - 190 - 165  , 158 , 165);
     }
 
     //GETTERS AND SETTERS

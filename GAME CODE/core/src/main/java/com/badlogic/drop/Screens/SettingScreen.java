@@ -13,14 +13,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class SettingScreen implements Screen {
 
-    private final Rectangle terms;
-    private final Rectangle back;
     //ATTRIBUTES
     private Angry_Birds_Game game;
     Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
     private final Rectangle map;
+    private final Rectangle terms;
+    private final Rectangle back;
+    private final Rectangle music_button;
 
     //CONSTRUCTOR
     public SettingScreen(Angry_Birds_Game _game){
@@ -31,7 +32,8 @@ public class SettingScreen implements Screen {
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
         map = new Rectangle(955,1024 - 481 - 299 , 322 , 299);
         terms = new Rectangle(1367,1024 -481 - 299 , 322 ,299);
-        back = new Rectangle(187 , 1024 - 190 - 165 , 158 , 165);
+        music_button = new Rectangle(131,1024 -481 - 299 , 322 ,299);
+        back = new Rectangle(35, 1024 - 35 - 135 , 134 , 135);;
     }
 
     //GETTERS AND SETTERS
@@ -76,8 +78,6 @@ public class SettingScreen implements Screen {
             touchY = gameport.getScreenHeight() - touchY;
 
             // Check if the touch is within the settings button bounds
-
-
             if (map.contains(touchX, touchY)) {
                 game.setScreen(new Maps(game)); // Navigate to Level1Screen
                 dispose();
@@ -85,6 +85,15 @@ public class SettingScreen implements Screen {
             else if (terms.contains(touchX, touchY)) {
                 game.setScreen(new Termsandcondition(game)); // Navigate to Level1Screen
                 dispose();
+            }
+            else if (music_button.contains(touchX, touchY)) {
+                if (game.getBackgroundMusic().isPlaying()) {
+                    // Pause the music if it is currently playing
+                    game.getBackgroundMusic().pause();
+                } else {
+                    // Play the music if it is currently paused
+                    game.getBackgroundMusic().play();
+                }
             }
             else if (back.contains(touchX, touchY)) {
                 game.setScreen(new FirstScreen(game));// Navigate to Level1Screen

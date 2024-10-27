@@ -39,11 +39,8 @@ public class Playnewgame implements Screen {
         font = new BitmapFont();
         font.setColor(BLACK);
       //  promptname();
-
-
-
-
     }
+
     private void promptname(){
         Gdx.input.getTextInput(new TextInputListener(){
             @Override
@@ -99,7 +96,6 @@ public class Playnewgame implements Screen {
        // handleKeyboardInput();
 
         // Handle input: Move to FirstScreen if ENTER is pressed
-
     }
     private void handleinput(){
         if (Gdx.input.justTouched()) {
