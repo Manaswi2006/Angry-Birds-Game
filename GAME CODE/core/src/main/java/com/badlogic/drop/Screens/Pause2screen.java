@@ -56,6 +56,11 @@ public class Pause2screen implements Screen {
 
     }
 
+    private void resumeGame() {
+        // Retrieve and set the saved Level1Screen
+        game.setScreen(game.getSavedLevel2Screen());
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -80,7 +85,8 @@ public class Pause2screen implements Screen {
                 dispose();
             }
             else if (play.contains(touchX, touchY)) {
-                game.setScreen(new Level2Screen(game)); // Navigate to Level1Screen
+                //game.setScreen(new Level1Screen(game)); // Navigate to Level1Screen
+                resumeGame();
                 dispose();
             }
             else if (replay.contains(touchX, touchY)) {

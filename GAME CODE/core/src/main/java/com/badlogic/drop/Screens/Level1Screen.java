@@ -202,8 +202,11 @@ public class Level1Screen implements Screen {
                 getGame().setScreen(new GameLostScreen(getGame(), 1));
                 dispose();
             } else if (getPauseButtonBounds().contains(touchX, touchY)) {
+                // Save the current level screen in the game instance
+                getGame().setSavedLevel1Screen(this);
+
+                // Navigate to the pause screen
                 getGame().setScreen(new Pause1screen(getGame()));
-                dispose();
             }
         }
     }

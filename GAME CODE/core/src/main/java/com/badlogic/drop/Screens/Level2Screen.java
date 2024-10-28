@@ -200,11 +200,14 @@ public class Level2Screen implements Screen {
                 getGame().setScreen(new LevelsMenuAllScreen(getGame()));
                 dispose();
             } else if (getGiveUpButtonBounds().contains(touchX, touchY)) {
-                getGame().setScreen(new GameLostScreen(getGame(), 1));
+                getGame().setScreen(new GameLostScreen(getGame(), 2));
                 dispose();
             } else if (getPauseButtonBounds().contains(touchX, touchY)) {
-                getGame().setScreen(new Pause1screen(getGame()));
-                dispose();
+                // Save the current level screen in the game instance
+                getGame().setSavedLevel2Screen(this);
+
+                // Navigate to the pause screen
+                getGame().setScreen(new Pause2screen(getGame()));
             }
         }
     }
