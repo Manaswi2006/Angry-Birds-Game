@@ -2,6 +2,7 @@ package com.badlogic.drop.Screens;
 
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.drop.Sprites.Bird;
+import com.badlogic.drop.Sprites.Ground;
 import com.badlogic.drop.Sprites.Red_Bird;
 import com.badlogic.drop.Sprites.Slingshot;
 import com.badlogic.drop.Scenes.TowerGenerator;
@@ -50,7 +51,7 @@ public class Level1Screen implements Screen {
 // Initialize the debug renderer to visualize Box2D objects
         debugRenderer = new Box2DDebugRenderer();
         setGame(game);
-
+        //Ground ground = new Ground(world,0,0,4000,600);
         // Initialize texture and camera
         setTexture(new Texture("Level1.png"));
         setGamecam(new OrthographicCamera());

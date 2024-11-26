@@ -3,7 +3,6 @@ package com.badlogic.drop.Screens;
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,7 +24,7 @@ public class Playnewgame implements Screen {
     private final Rectangle nextButtonBounds;
     private BitmapFont font;
     private String playerName = "";
-    private static final String PROFILE_FILE = "C://Users//Manaswi//OneDrive//Desktop//Game Dev//ANGRY BIRDS//Angry-Birds-Game//profiles.txt";
+    private static final String PROFILE_FILE = "profiles.dat";
     private ArrayList<Profile> profiles;
 
     public Playnewgame(Angry_Birds_Game _game) {
@@ -46,18 +45,34 @@ public class Playnewgame implements Screen {
         }
     }
 
-    private void promptName() {
-        Gdx.input.getTextInput(new TextInputListener() {
-            @Override
-            public void input(String s) {
-                playerName = s;
-            }
+    private void updatePlayerName() {
+        // Handle backspace to remove the last character
+        if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) && playerName.length() > 0) {
+            playerName = playerName.substring(0, playerName.length() - 1);
+        }
 
-            @Override
-            public void canceled() {
-                playerName = "";
+        // Capture individual key presses without adding them repeatedly
+        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+            playerName += 'A'; // Add 'A' if 'A' is pressed
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+            playerName += 'B'; // Add 'B' if 'B' is pressed
+        }
+        // Repeat this pattern for other characters
+
+        // For example, capture letters A-Z and a-z
+        for (char c = 'A'; c <= 'Z'; c++) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(String.valueOf(c)))) {
+                playerName += c;
             }
-        }, "Enter your name:", "", "Name");
+        }
+        for (char c = 'a'; c <= 'z'; c++) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(String.valueOf(c)))) {
+                playerName += c;
+            }
+        }
+
+    // You can add more key press detection here for other characters (numbers, symbols, etc.)
     }
 
     private void saveProfiles() {
@@ -86,7 +101,7 @@ public class Playnewgame implements Screen {
 
     @Override
     public void show() {
-        promptName();
+        // No need to prompt name here, as we are allowing live typing.
     }
 
     @Override
@@ -97,13 +112,15 @@ public class Playnewgame implements Screen {
         game.getBatch().setProjectionMatrix(gamecam.combined);
         game.getBatch().begin();
         game.getBatch().draw(texture, 0, 0);
-        font.draw(game.getBatch(), "Name: " + playerName, 508, 405);
+        font.draw(game.getBatch(), "Name: " + playerName, 508, 405);  // Display typed name
         game.getBatch().end();
 
         handleInput();
     }
 
     private void handleInput() {
+        updatePlayerName();  // Update player name based on key inputs
+
         if (Gdx.input.justTouched()) {
             float touchX = Gdx.input.getX();
             float touchY = Gdx.input.getY();
