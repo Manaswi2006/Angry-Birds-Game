@@ -1,7 +1,6 @@
 package com.badlogic.drop;
 
-import com.badlogic.drop.Screens.FirstScreen;
-import com.badlogic.drop.Screens.LoadingScreen;
+import com.badlogic.drop.Screens.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -19,6 +18,9 @@ public class Angry_Birds_Game extends Game {
     private String activeprofileis ;
     private List<String> profiles;
     private Music backgroundMusic;
+    private Level1Screen savedLevel1Screen;
+    private Level2Screen savedLevel2Screen;
+    private Level3Screen savedLevel3Screen;
 
     public Angry_Birds_Game(){
         profiles = new ArrayList<>();
@@ -55,6 +57,33 @@ public class Angry_Birds_Game extends Game {
 
     public static int getvWidth() {
         return V_WIDTH;
+    }
+
+    // Getter and Setter for saved Level1Screen
+    public Level1Screen getSavedLevel1Screen() {
+        return savedLevel1Screen;
+    }
+
+    public void setSavedLevel1Screen(Level1Screen screen) {
+        this.savedLevel1Screen = screen;
+    }
+
+    // Getter and Setter for saved Level1Screen
+    public Level2Screen getSavedLevel2Screen() {
+        return savedLevel2Screen;
+    }
+
+    public void setSavedLevel2Screen(Level2Screen screen) {
+        this.savedLevel2Screen = screen;
+    }
+
+    // Getter and Setter for saved Level1Screen
+    public Level3Screen getSavedLevel3Screen() {
+        return savedLevel3Screen;
+    }
+
+    public void setSavedLevel3Screen(Level3Screen screen) {
+        this.savedLevel3Screen = screen;
     }
 
     //METHODS
