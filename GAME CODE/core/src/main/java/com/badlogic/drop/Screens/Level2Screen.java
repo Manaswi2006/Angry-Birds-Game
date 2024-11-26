@@ -12,6 +12,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -31,9 +34,15 @@ public class Level2Screen implements Screen {
     private Rectangle goBackButtonBounds;
     private Rectangle giveUpButtonBounds;
     private Rectangle pauseButtonBounds;
+    private World world;  // creating world for box2d
+    private Box2DDebugRenderer debugRenderer;
 
     // CONSTRUCTOR
     public Level2Screen(Angry_Birds_Game game) {
+        world = new World(new Vector2(0, -9.8f), true);  // (0, -9.8) is the gravity vector
+// for gravity
+// Initialize the debug renderer to visualize Box2D objects
+        debugRenderer = new Box2DDebugRenderer();
         setGame(game);
 
         // Initialize texture and camera
@@ -50,7 +59,7 @@ public class Level2Screen implements Screen {
 
         // Initialize TowerGenerator and generate tower
         setTowerGenerator(new TowerGenerator(getGame()));
-        getTowerGenerator().generateTower(1300, 250);
+        getTowerGenerator().generateTower(1300, 250,world);
 
         // Define button bounds
         setGoBackButtonBounds(new Rectangle(35, 1024 - 35 - 134, 133, 134));

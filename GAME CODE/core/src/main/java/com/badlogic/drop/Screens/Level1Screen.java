@@ -70,7 +70,7 @@ public class Level1Screen implements Screen {
 
         // Initialize TowerGenerator and generate tower
         setTowerGenerator(new TowerGenerator(getGame()));
-        getTowerGenerator().generateTower(1200, 225);
+        getTowerGenerator().generateTower(1200, 225,world);
 
         // Define button bounds
         setGoBackButtonBounds(new Rectangle(35, 1024 - 35 - 134, 133, 134));

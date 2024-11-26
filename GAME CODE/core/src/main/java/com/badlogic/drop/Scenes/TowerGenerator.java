@@ -2,6 +2,7 @@ package com.badlogic.drop.Scenes;
 
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.drop.Sprites.*;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import java.util.Random;
 
@@ -19,7 +20,7 @@ public class TowerGenerator {
     }
 
     // Method to generate a tower
-    public void generateTower(float baseX, float baseY) {
+    public void generateTower(float baseX, float baseY, World world) {
         Random random = new Random();
         int towerWidth = random.nextInt(4) + 2; // Random width of 2 to 5 blocks
 
@@ -28,6 +29,7 @@ public class TowerGenerator {
             int columnHeight = random.nextInt(5) + 1; // Random height of 1 to 5 blocks for each column
             for (int j = 0; j < columnHeight; j++) {
                 Blocks block = createRandomBlock(baseX + i * 80, baseY + j * 70, random);
+                block.createBlockBody(world, baseX + i * 80, baseY + j * 70);
                 blockTower.add(block);
             }
         }
@@ -42,6 +44,7 @@ public class TowerGenerator {
             // Generate a random pig
             Pig pig = createRandomPig(pigBlock.getBlockSprite().getX() + 15, pigBlock.getBlockSprite().getY() + 18, random);
             pigs.add(pig);
+            pig.createPigBody(world, pigBlock.getBlockSprite().getX() + 15, pigBlock.getBlockSprite().getY() + 18); // Create Box2D body
         }
     }
 
