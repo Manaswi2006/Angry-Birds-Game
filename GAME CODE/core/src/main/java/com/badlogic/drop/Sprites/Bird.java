@@ -25,4 +25,10 @@ public abstract class Bird {
     public void dispose() {
         birdSprite.getTexture().dispose();
     }
+    public Sprite getBirdSprite() {
+        return birdSprite;
+    }
+    public SpriteBatch getBatch() {
+        return batch;
+    }
 }

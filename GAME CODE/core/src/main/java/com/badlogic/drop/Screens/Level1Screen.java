@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -30,9 +33,14 @@ public class Level1Screen implements Screen {
     private Rectangle goBackButtonBounds;
     private Rectangle giveUpButtonBounds;
     private Rectangle pauseButtonBounds;
-
+    private World world;  // creating world for box2d
+    private Box2DDebugRenderer debugRenderer;
     // CONSTRUCTOR
     public Level1Screen(Angry_Birds_Game game) {
+        world = new World(new Vector2(0, -9.8f), true);  // (0, -9.8) is the gravity vector
+// for gravity
+// Initialize the debug renderer to visualize Box2D objects
+        debugRenderer = new Box2DDebugRenderer();
         setGame(game);
 
         // Initialize texture and camera
@@ -46,6 +54,11 @@ public class Level1Screen implements Screen {
         setBird2(new Red_Bird(getGame(), 350, 250));
         setBird3(new Red_Bird(getGame(), 425, 350));
         setSlingshot(new Slingshot(getGame(), 400, 240));
+        //create bodies for red birds
+         bird1.createBirdBody(world , 265 , 250);
+        bird2.createBirdBody(world, 350, 250);  // Create Box2D body for bird2
+        bird3.createBirdBody(world, 425, 350);
+
 
         // Initialize TowerGenerator and generate tower
         setTowerGenerator(new TowerGenerator(getGame()));
@@ -55,6 +68,26 @@ public class Level1Screen implements Screen {
         setGoBackButtonBounds(new Rectangle(35, 1024 - 35 - 134, 133, 134));
         setGiveUpButtonBounds(new Rectangle(1521, 1024 - 47 - 110, 228, 110));
         setPauseButtonBounds(new Rectangle(230, 1024 - 26 - 134, 164, 171));
+
+    //code for the collision part
+
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                // Code to handle the beginning of a collision
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                // Code to handle the end of a collision
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {}
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {}
+        });
     }
 
     // GETTERS AND SETTERS
@@ -162,6 +195,9 @@ public class Level1Screen implements Screen {
 
     @Override
     public void render(float delta) {
+        //updating box2d world
+        //e physics world with 60 FPS, 6 velocity iterations, 2 position iterati
+        world.step(1/60f,6,2);
         // Clear screen with black color
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -180,6 +216,9 @@ public class Level1Screen implements Screen {
         getBird3().render();
 
         getGame().getBatch().end();
+        // Render Box2D debug shapes (for visualizing physics objects)
+        debugRenderer.render(world, getGamecam().combined);
+
 
         // Handle user input
         handleInput();
@@ -192,7 +231,15 @@ public class Level1Screen implements Screen {
             float touchY = Gdx.input.getY();
 
             // Convert to world coordinates (invert Y-axis)
-            touchY = getGameport().getScreenHeight() - touchY;
+            Vector3 worldTouch = getGamecam().unproject(new Vector3(touchX, touchY,0));
+
+            if (bird1.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
+                bird1.launch();
+            } else if (bird2.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
+                bird2.launch();
+            } else if (bird3.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
+                bird3.launch();
+            }
 
             // Check if the touch is within the defined button bounds
             if (getGoBackButtonBounds().contains(touchX, touchY)) {
@@ -237,5 +284,9 @@ public class Level1Screen implements Screen {
         getBird3().dispose();
         getSlingshot().dispose();
         getTowerGenerator().dispose();
+        // public void dispose() {
+        // Dispose Box2D world
+        world.dispose();
+        debugRenderer.dispose();
     }
 }
