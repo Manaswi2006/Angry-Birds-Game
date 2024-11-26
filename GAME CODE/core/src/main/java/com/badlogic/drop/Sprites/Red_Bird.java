@@ -1,6 +1,7 @@
 package com.badlogic.drop.Sprites;
 
 import com.badlogic.drop.Angry_Birds_Game;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Red_Bird extends Bird{
@@ -12,7 +13,7 @@ public class Red_Bird extends Bird{
     // Method to create the Box2D body
     public void createBirdBody(World world, float x, float y) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody; // Make the bird static initially
+        bodyDef.type = BodyDef.BodyType.KinematicBody; // Make the bird static initially
         bodyDef.position.set(x / PPM, y / PPM);
 
         body = world.createBody(bodyDef);
@@ -29,9 +30,21 @@ public class Red_Bird extends Bird{
         body.createFixture(fixtureDef);
         circle.dispose();
     }
-    public void launch() {
+    public void launch(boolean isOnSlingshot, float slingshotX, float slingshotY, float forceX, float forceY) {
         if (body != null) {
-            body.setType(BodyDef.BodyType.DynamicBody);
+            if (isOnSlingshot) {
+                // Move the bird to the slingshot
+                System.out.println("Placing bird on slingshot at: " + slingshotX + ", " + slingshotY);
+                body.setTransform(slingshotX / PPM, slingshotY / PPM, 0); // Move to slingshot position
+                body.setType(BodyDef.BodyType.StaticBody); // Static while sitting on slingshot
+            } else {
+                // Launch the bird with a dynamic body
+                System.out.println("Launching bird with force: " + forceX + ", " + forceY);
+                body.setType(BodyDef.BodyType.DynamicBody); // Allow movement
+                body.applyLinearImpulse(new Vector2(forceX / PPM, forceY / PPM), body.getWorldCenter(), true);
+            }
+        } else {
+            System.out.println("Error: Bird body is null!");
         }
     }
 
@@ -48,5 +61,6 @@ public class Red_Bird extends Bird{
             getBirdSprite().draw(getBatch()); // Ensure the sprite is drawn
         }
     }
+
 
 }

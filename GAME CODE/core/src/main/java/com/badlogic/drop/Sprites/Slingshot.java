@@ -20,7 +20,9 @@ public class Slingshot {
     public void render() {
         SlingSprite.draw(batch);
     }
-
+    public Sprite getSlingSprite() {
+        return SlingSprite;
+    }
     // Releases resources used by the bird
     public void dispose() {
         SlingSprite.getTexture().dispose();

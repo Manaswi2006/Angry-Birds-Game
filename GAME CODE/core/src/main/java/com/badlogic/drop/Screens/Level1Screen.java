@@ -7,19 +7,24 @@ import com.badlogic.drop.Sprites.Slingshot;
 import com.badlogic.drop.Scenes.TowerGenerator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Level1Screen implements Screen {
 
     // ATTRIBUTES
+    private boolean isDragging = false;
+    private Red_Bird currentBird = null;
     private Angry_Birds_Game game;
     private Texture texture;
     private OrthographicCamera gamecam;
@@ -29,6 +34,9 @@ public class Level1Screen implements Screen {
     private Red_Bird bird3;
     private Slingshot slingshot;
     private TowerGenerator towerGenerator;
+    Array<Fixture> fixturtodestroy = new Array<Fixture>(10);
+    Array<Body> bodiestodestroy = new Array<Body>(10);
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     private Rectangle goBackButtonBounds;
     private Rectangle giveUpButtonBounds;
@@ -86,7 +94,12 @@ public class Level1Screen implements Screen {
             public void preSolve(Contact contact, Manifold oldManifold) {}
 
             @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {}
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+                Fixture fixtureA = contact.getFixtureA(),fixtureB = contact.getFixtureB();
+                fixturtodestroy.add(fixtureA);
+
+
+            }
         });
     }
 
@@ -193,70 +206,100 @@ public class Level1Screen implements Screen {
         // Placeholder for code to execute when screen is shown
     }
 
+
     @Override
     public void render(float delta) {
-        //updating box2d world
-        //e physics world with 60 FPS, 6 velocity iterations, 2 position iterati
-        world.step(1/60f,6,2);
-        // Clear screen with black color
+        // Update physics world
+        world.step(1 / 60f, 6, 2);
+
+        // Clear screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Set camera projection and begin rendering
+        // ShapeRenderer for trajectory
+        if (isDragging && currentBird != null) {
+            shapeRenderer.setProjectionMatrix(gamecam.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.line(
+                slingshot.getSlingSprite().getX(),
+                slingshot.getSlingSprite().getY(),
+                currentBird.getBirdSprite().getX(),
+                currentBird.getBirdSprite().getY()
+            );
+            shapeRenderer.end();
+        }
+
+        // SpriteBatch rendering
         getGame().getBatch().setProjectionMatrix(getGamecam().combined);
         getGame().getBatch().begin();
-        getGame().getBatch().draw(getTexture(), 0, 0);
-
-        // Render birds, slingshot, and tower with pigs
-
-        getTowerGenerator().render();
-        getSlingshot().render();
-        getBird1().render();
-        getBird2().render();
-        getBird3().render();
-
+        getGame().getBatch().draw(getTexture(), 0, 0); // Background
+        getTowerGenerator().render();                 // Tower
+        getSlingshot().render();                      // Slingshot
+        bird1.render();                               // Birds
+        bird2.render();
+        bird3.render();
         getGame().getBatch().end();
-        // Render Box2D debug shapes (for visualizing physics objects)
-        debugRenderer.render(world, getGamecam().combined);
 
+        // Debug rendering
+        debugRenderer.render(world, gamecam.combined);
 
-        // Handle user input
+        // Handle input
         handleInput();
     }
 
+    private void destroy(Fixture fixture){
+        fixturtodestroy.add(fixture);
+        if(fixture.getBody().getFixtureList().size - 1 <1){
+            bodiestodestroy.add(fixture.getBody());
+
+        }    }
+
     // Handle input for button clicks
+
+
     private void handleInput() {
         if (Gdx.input.justTouched()) {
             float touchX = Gdx.input.getX();
             float touchY = Gdx.input.getY();
+            Vector3 worldTouch = gamecam.unproject(new Vector3(touchX, touchY, 0));
 
-            // Convert to world coordinates (invert Y-axis)
-            Vector3 worldTouch = getGamecam().unproject(new Vector3(touchX, touchY,0));
-
+            // Check which bird was touched
             if (bird1.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
-                bird1.launch();
+                currentBird = bird1;
+                currentBird.launch(true, slingshot.getSlingSprite().getX(), slingshot.getSlingSprite().getY(), 0, 0);
             } else if (bird2.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
-                bird2.launch();
+                currentBird = bird2;
+                currentBird.launch(true, slingshot.getSlingSprite().getX(), slingshot.getSlingSprite().getY(), 0, 0);
             } else if (bird3.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
-                bird3.launch();
-            }
-
-            // Check if the touch is within the defined button bounds
-            if (getGoBackButtonBounds().contains(touchX, touchY)) {
-                getGame().setScreen(new LevelsMenuAllScreen(getGame()));
-                dispose();
-            } else if (getGiveUpButtonBounds().contains(touchX, touchY)) {
-                getGame().setScreen(new GameLostScreen(getGame(), 1));
-                dispose();
-            } else if (getPauseButtonBounds().contains(touchX, touchY)) {
-                // Save the current level screen in the game instance
-                getGame().setSavedLevel1Screen(this);
-
-                // Navigate to the pause screen
-                getGame().setScreen(new Pause1screen(getGame()));
+                currentBird = bird3;
+                currentBird.launch(true, slingshot.getSlingSprite().getX(), slingshot.getSlingSprite().getY(), 0, 0);
             }
         }
+
+        // Handle dragging motion
+        if (Gdx.input.isTouched() && currentBird != null) {
+            isDragging = true;
+            float dragX = Gdx.input.getX();
+            float dragY = Gdx.input.getY();
+
+            Vector3 worldDrag = gamecam.unproject(new Vector3(dragX, dragY, 0));
+            currentBird.dragBird(worldDrag.x, worldDrag.y);
+        }
+
+        // Release bird when touch is lifted
+        if (!Gdx.input.isTouched() && isDragging && currentBird != null) {
+            isDragging = false;
+
+            // Calculate force based on slingshot position and release point
+            float forceX = slingshot.getSlingSprite().getX() - currentBird.getBirdSprite().getX();
+            float forceY = slingshot.getSlingSprite().getY() - currentBird.getBirdSprite().getY();
+            currentBird.launch(false, 0, 0, forceX * 2, forceY * 3); // Apply scaled force
+            currentBird = null;
+        }
     }
+
+
 
     @Override
     public void resize(int width, int height) {
