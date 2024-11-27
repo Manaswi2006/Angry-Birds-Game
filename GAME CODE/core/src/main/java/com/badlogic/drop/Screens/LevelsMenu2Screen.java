@@ -29,9 +29,10 @@ public class LevelsMenu2Screen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
         gamecam.position.set(1792 / 2f, 1024 / 2f, 0);
-        Level1ButtonBounds = new Rectangle(167,  1024 - 379 - 460, 441, 460);
-        Level2ButtonBounds = new Rectangle(675, 1024 - 379 - 460, 441, 460);
-        GobackButtonBounds = new Rectangle(40, 1024 - 41 - 95, 146, 95);
+
+        Level1ButtonBounds = new Rectangle(652, 1024 - 469 - 125 + 90, 456, 125);
+        Level2ButtonBounds = new Rectangle(652, 1024 - 619 - 125 + 90, 456, 125);
+        GobackButtonBounds = new Rectangle(35, 1024 - 35 - 135 , 134 , 135);
     }
 
     //GETTERS AND SETTERS

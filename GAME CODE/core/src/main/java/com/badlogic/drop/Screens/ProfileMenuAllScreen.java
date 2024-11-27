@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class ProfileMenuAllScreen implements Screen {
 
-    // ATTRIBUTES
     private Angry_Birds_Game game;
     private Texture texture;
     private OrthographicCamera gamecam;
@@ -24,9 +23,9 @@ public class ProfileMenuAllScreen implements Screen {
     private final Rectangle User3ButtonBounds;
     private final Rectangle GoBackButtonBounds;
     private BitmapFont font;
-    private String[] profiles = {"User 1", "User 2", "User 3"};
+    private Profile[] profiles;
+    private static final String PROFILE_FILE = "profiles.ser";
 
-    // CONSTRUCTOR
     public ProfileMenuAllScreen(Angry_Birds_Game _game) {
         this.game = _game;
         texture = new Texture("ProfileMenuAll.png");
@@ -43,32 +42,26 @@ public class ProfileMenuAllScreen implements Screen {
         font = new BitmapFont();
         font.setColor(Color.WHITE);
         font.getData().setScale(2);
+
+        // Load profiles or create new ones
+        profiles = Profile.loadProfiles(PROFILE_FILE);
+        if (profiles == null) {
+            profiles = new Profile[] {
+                new Profile("User 1", 1),
+                new Profile("User 2", 1),
+                new Profile("User 3", 1)
+            };
+            Profile.saveProfiles(profiles, PROFILE_FILE);
+        }
     }
 
-    // GETTERS AND SETTERS
-    public Angry_Birds_Game getGame() {
-        return game;
-    }
-
-    public void setGame(Angry_Birds_Game _game) {
-        this.game = _game;
-    }
-
-    public Texture getTexture() {
-        return texture;
-    }
-
-    public void setTexture(Texture _texture) {
-        this.texture = _texture;
-    }
-
-    // SCREEN METHODS
     @Override
-    public void show() {}
+    public void show() {
+
+    }
 
     @Override
     public void render(float delta) {
-        // Clear screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -77,10 +70,10 @@ public class ProfileMenuAllScreen implements Screen {
         game.getBatch().begin();
         game.getBatch().draw(texture, 0, 0);
 
-        // Draw profile names on respective buttons
-        font.draw(game.getBatch(), profiles[0], 850, 1024 - 467 - 35);
-        font.draw(game.getBatch(), profiles[1], 850, 1024 - 605 - 35);
-        font.draw(game.getBatch(), profiles[2], 850, 1024 - 744 - 35);
+        // Draw profile names and levels
+        font.draw(game.getBatch(), profiles[0].getName() + " - Level " + profiles[0].getLevel(), 800, 1024 - 467 - 35);
+        font.draw(game.getBatch(), profiles[1].getName() + " - Level " + profiles[1].getLevel(), 800, 1024 - 605 - 35);
+        font.draw(game.getBatch(), profiles[2].getName() + " - Level " + profiles[2].getLevel(), 800, 1024 - 744 - 35);
         game.getBatch().end();
 
         handleInput();
@@ -91,27 +84,31 @@ public class ProfileMenuAllScreen implements Screen {
             float touchX = Gdx.input.getX();
             float touchY = Gdx.input.getY();
 
-            // Convert to world coordinates (invert Y-axis)
             touchY = gameport.getScreenHeight() - touchY;
 
-            // Check for button interactions
             if (User1ButtonBounds.contains(touchX, touchY)) {
-                //game.setActiveProfile(profiles[0]);
-                game.setScreen(new LevelsMenuAllScreen(game));
-                dispose();
+                openLevelMenu(profiles[0]);
             } else if (User2ButtonBounds.contains(touchX, touchY)) {
-                //game.setActiveProfile(profiles[1]);
-                game.setScreen(new LevelsMenuAllScreen(game));
-                dispose();
+                openLevelMenu(profiles[1]);
             } else if (User3ButtonBounds.contains(touchX, touchY)) {
-                //game.setActiveProfile(profiles[2]);
-                game.setScreen(new LevelsMenuAllScreen(game));
-                dispose();
+                openLevelMenu(profiles[2]);
             } else if (GoBackButtonBounds.contains(touchX, touchY)) {
                 game.setScreen(new FirstScreen(game));
                 dispose();
             }
         }
+    }
+
+    private void openLevelMenu(Profile profile) {
+        int level = profile.getLevel();
+        if (level == 1) {
+            game.setScreen(new LevelsMenu1Screen(game));
+        } else if (level == 2) {
+            game.setScreen(new LevelsMenu2Screen(game));
+        } else if (level == 3) {
+            game.setScreen(new LevelsMenuAllScreen(game));
+        }
+        dispose();
     }
 
     @Override
@@ -120,17 +117,26 @@ public class ProfileMenuAllScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+
+    }
 
     @Override
     public void dispose() {
         texture.dispose();
         font.dispose();
+
+        // Save profiles on exit
+        Profile.saveProfiles(profiles, PROFILE_FILE);
     }
 }
