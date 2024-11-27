@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class ProfileMenuAllScreen implements Screen {
 
+
     private Angry_Birds_Game game;
     private Texture texture;
     private OrthographicCamera gamecam;
@@ -102,11 +103,11 @@ public class ProfileMenuAllScreen implements Screen {
     private void openLevelMenu(Profile profile) {
         int level = profile.getLevel();
         if (level == 1) {
-            game.setScreen(new LevelsMenu1Screen(game));
+            game.setScreen(new LevelsMenu1Screen(game,profile));
         } else if (level == 2) {
-            game.setScreen(new LevelsMenu2Screen(game));
+            game.setScreen(new LevelsMenu2Screen(game,profile));
         } else if (level == 3) {
-            game.setScreen(new LevelsMenuAllScreen(game));
+            game.setScreen(new LevelsMenuAllScreen(game,profile));
         }
         dispose();
     }

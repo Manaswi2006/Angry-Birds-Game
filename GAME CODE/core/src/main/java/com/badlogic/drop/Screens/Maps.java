@@ -78,18 +78,18 @@ public class Maps implements Screen {
 
             // Check if the touch is within the settings button bounds
             if (Level1ButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new Level1Screen(game)); // Navigate to SettingScreen
+                game.setScreen(new Level1Screen(game,new Profile("user1",3))); // Navigate to SettingScreen
                 dispose();
             }
             // Check if the touch is within the level1 button bounds
             else if (Level2ButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new Level2Screen(game)); // Navigate to Level1Screen
+                game.setScreen(new Level2Screen(game,new Profile("user1",3))); // Navigate to Level1Screen
                 dispose();
             }
 
             // Check if the touch is within the level1 button bounds
             else if (Level3ButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new Level3Screen(game)); // Navigate to Level1Screen
+                game.setScreen(new Level3Screen(game,new Profile("user1",3))); // Navigate to Level1Screen
                 dispose();
             }
 

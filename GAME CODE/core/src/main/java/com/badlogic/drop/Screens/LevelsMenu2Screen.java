@@ -14,6 +14,7 @@ public class LevelsMenu2Screen implements Screen {
 
 
     //ATTRIBUTES
+    private Profile profile;
     private Angry_Birds_Game game;
     Texture texture;
     private OrthographicCamera gamecam;
@@ -23,8 +24,9 @@ public class LevelsMenu2Screen implements Screen {
     private final Rectangle GobackButtonBounds;
 
     //CONSTRUCTOR
-    public LevelsMenu2Screen(Angry_Birds_Game _game){
+    public LevelsMenu2Screen(Angry_Birds_Game _game, Profile profile){
         this.game = _game;
+        this.profile = profile;
         texture = new Texture("LevelMenu2.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
@@ -77,12 +79,12 @@ public class LevelsMenu2Screen implements Screen {
 
             // Check if the touch is within the settings button bounds
             if (Level1ButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new Level1Screen(game)); // Navigate to SettingScreen
+                game.setScreen(new Level1Screen(game,profile)); // Navigate to SettingScreen
                 dispose();
             }
             // Check if the touch is within the level1 button bounds
             else if (Level2ButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new Level2Screen(game)); // Navigate to Level1Screen
+                game.setScreen(new Level2Screen(game,profile)); // Navigate to Level1Screen
                 dispose();
             }
 

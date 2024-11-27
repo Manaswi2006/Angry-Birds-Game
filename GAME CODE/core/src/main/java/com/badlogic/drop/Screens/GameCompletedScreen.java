@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class GameCompletedScreen implements Screen {
 
     //ATTRIBUTES
+    private Profile profile;
     private Angry_Birds_Game game;
     private int level;
     Texture texture;
@@ -20,8 +21,9 @@ public class GameCompletedScreen implements Screen {
     private final Rectangle MainMenuButtonBounds;
 
     //CONSTRUCTOR
-    public GameCompletedScreen(Angry_Birds_Game _game){
+    public GameCompletedScreen(Angry_Birds_Game _game, Profile profile){
         this.game = _game;
+        this.profile = profile;
         texture = new Texture("GameCompleted.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
@@ -100,7 +102,7 @@ public class GameCompletedScreen implements Screen {
 
             // Check if the touch is within the level1 button bounds
             if (MainMenuButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
+                game.setScreen(new LevelsMenuAllScreen(game, profile)); // Navigate to Level1Screen
                 dispose();
             }
         }

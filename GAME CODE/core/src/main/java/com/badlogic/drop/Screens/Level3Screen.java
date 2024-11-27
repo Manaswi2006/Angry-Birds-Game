@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Level3Screen implements Screen {
 
     // ATTRIBUTES
+    private Profile profile;
     private Angry_Birds_Game game;
     private Texture texture;
     private OrthographicCamera gamecam;
@@ -35,10 +36,11 @@ public class Level3Screen implements Screen {
     private Box2DDebugRenderer debugRenderer;
 
     // CONSTRUCTOR
-    public Level3Screen(Angry_Birds_Game game) {
+    public Level3Screen(Angry_Birds_Game game, Profile profile) {
         world = new World(new Vector2(0, -9.8f), true);  // (0, -9.8) is the gravity vector
 // for gravity
 // Initialize the debug renderer to visualize Box2D objects
+        this.profile = profile;
         debugRenderer = new Box2DDebugRenderer();
         setGame(game);
 
@@ -203,17 +205,17 @@ public class Level3Screen implements Screen {
 
             // Check if the touch is within the defined button bounds
             if (getGoBackButtonBounds().contains(touchX, touchY)) {
-                getGame().setScreen(new LevelsMenuAllScreen(getGame()));
+                getGame().setScreen(new LevelsMenuAllScreen(getGame(),profile));
                 dispose();
             } else if (getGiveUpButtonBounds().contains(touchX, touchY)) {
-                getGame().setScreen(new GameLostScreen(getGame(), 3));
+                getGame().setScreen(new GameLostScreen(getGame(), 3,profile));
                 dispose();
             } else if (getPauseButtonBounds().contains(touchX, touchY)) {
                 // Save the current level screen in the game instance
                 getGame().setSavedLevel3Screen(this);
 
                 // Navigate to the pause screen
-                getGame().setScreen(new Pause3screen(getGame()));
+                getGame().setScreen(new Pause3screen(getGame(),profile));
             }
         }
     }
