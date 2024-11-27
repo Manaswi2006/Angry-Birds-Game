@@ -17,11 +17,13 @@ public abstract class Blocks {
     protected SpriteBatch batch;
     private Body body;
 
+
     public Blocks(Angry_Birds_Game game, float x, float y, String texturePath) {
         this.batch = game.getBatch();
         Texture blockTexture = new Texture(texturePath);
         this.blockSprite = new Sprite(blockTexture);
         this.blockSprite.setPosition(x, y);
+
     }
 
     public void createBlockBody(World world, float x, float y) {
@@ -36,11 +38,13 @@ public abstract class Blocks {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = box;
-        fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.5f;
-        fixtureDef.restitution = 0.2f;
+        fixtureDef.density = 0.5f;
+        fixtureDef.friction = 0.2f;
+        fixtureDef.restitution = 0.1f;
 
-        body.createFixture(fixtureDef);
+        Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this); // This ensures the fixture references its associated block
+
         box.dispose();
     }
 

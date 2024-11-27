@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class Level1Screen implements Screen {
+public class Level1Screen implements Screen  {
 
     // ATTRIBUTES
     private boolean isDragging = false;
@@ -48,6 +48,7 @@ public class Level1Screen implements Screen {
     public Level1Screen(Angry_Birds_Game game) {
         world = new World(new Vector2(0, -9.8f), true);  // (0, -9.8) is the gravity vector
 // for gravity
+
 // Initialize the debug renderer to visualize Box2D objects
         debugRenderer = new Box2DDebugRenderer();
         setGame(game);
@@ -79,16 +80,15 @@ public class Level1Screen implements Screen {
         setPauseButtonBounds(new Rectangle(230, 1024 - 26 - 134, 164, 171));
 
     //code for the collision part
-
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                // Code to handle the beginning of a collision
+                // Handle collision start
             }
 
             @Override
             public void endContact(Contact contact) {
-                // Code to handle the end of a collision
+                // Handle collision end
             }
 
             @Override
@@ -96,12 +96,15 @@ public class Level1Screen implements Screen {
 
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse) {
-                Fixture fixtureA = contact.getFixtureA(),fixtureB = contact.getFixtureB();
-                fixturtodestroy.add(fixtureA);
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
 
-
+                // Queue fixtures for destruction
+                destroy(fixtureA);
+                destroy(fixtureB);
             }
         });
+
     }
 
     // GETTERS AND SETTERS
@@ -210,28 +213,30 @@ public class Level1Screen implements Screen {
 
     @Override
     public void render(float delta) {
-        // Update physics world
+        // Step the physics world
         world.step(1 / 60f, 6, 2);
 
         // Clear screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // ShapeRenderer for trajectory
-        if (isDragging && currentBird != null) {
-            shapeRenderer.setProjectionMatrix(gamecam.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(Color.RED);
-            shapeRenderer.line(
-                slingshot.getSlingSprite().getX(),
-                slingshot.getSlingSprite().getY(),
-                currentBird.getBirdSprite().getX(),
-                currentBird.getBirdSprite().getY()
-            );
-            shapeRenderer.end();
+        // Remove fixtures queued for destruction
+        for (Fixture fixture : fixturtodestroy) {
+            if (fixture != null && fixture.getBody() != null) {
+                fixture.getBody().destroyFixture(fixture);
+            }
         }
+        fixturtodestroy.clear();
 
-        // SpriteBatch rendering
+        // Remove bodies queued for destruction
+        for (Body body : bodiestodestroy) {
+            if (body != null) {
+                world.destroyBody(body);
+            }
+        }
+        bodiestodestroy.clear();
+
+        // SpriteBatch rendering (unchanged)
         getGame().getBatch().setProjectionMatrix(getGamecam().combined);
         getGame().getBatch().begin();
         getGame().getBatch().draw(getTexture(), 0, 0); // Background
@@ -249,12 +254,21 @@ public class Level1Screen implements Screen {
         handleInput();
     }
 
-    private void destroy(Fixture fixture){
-        fixturtodestroy.add(fixture);
-        if(fixture.getBody().getFixtureList().size - 1 <1){
-            bodiestodestroy.add(fixture.getBody());
+    private void destroy(Fixture fixture) {
+        // Add fixture to destruction queue if not already marked
+        if (fixture != null && !fixturtodestroy.contains(fixture, true)) {
+            fixturtodestroy.add(fixture);
 
-        }    }
+            // If the body has no remaining fixtures after this one, queue the body for destruction
+            Body body = fixture.getBody();
+            if (body != null && body.getFixtureList().size == 1) {
+                if (!bodiestodestroy.contains(body, true)) {
+                    bodiestodestroy.add(body);
+                }
+            }
+        }
+    }
+
 
     // Handle input for button clicks
 
@@ -295,7 +309,7 @@ public class Level1Screen implements Screen {
             // Calculate force based on slingshot position and release point
             float forceX = slingshot.getSlingSprite().getX() - currentBird.getBirdSprite().getX();
             float forceY = slingshot.getSlingSprite().getY() - currentBird.getBirdSprite().getY();
-            currentBird.launch(false, 0, 0, forceX * 2, forceY * 3); // Apply scaled force
+            currentBird.launch(false, 0, 0, forceX * 6, forceY * 5); // Apply scaled force
             currentBird = null;
         }
     }

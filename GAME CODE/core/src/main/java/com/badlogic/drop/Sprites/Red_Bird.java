@@ -23,9 +23,9 @@ public class Red_Bird extends Bird{
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
-        fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.5f;
-        fixtureDef.restitution = 0.6f;
+        fixtureDef.density = 2.0f;
+        fixtureDef.friction = 0.2f;
+        fixtureDef.restitution = 0.3f;
 
         body.createFixture(fixtureDef);
         circle.dispose();
