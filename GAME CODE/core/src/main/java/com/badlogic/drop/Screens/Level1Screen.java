@@ -1,4 +1,5 @@
 package com.badlogic.drop.Screens;
+import com.badlogic.drop.Screens.WorldContactListener;
 
 import com.badlogic.drop.Angry_Birds_Game;
 import com.badlogic.drop.Sprites.Bird;
@@ -83,30 +84,7 @@ public class Level1Screen implements Screen  {
         setPauseButtonBounds(new Rectangle(230, 1024 - 26 - 134, 164, 171));
 
     //code for the collision part
-        world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                // Handle collision start
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-                // Handle collision end
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {}
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-
-                // Queue fixtures for destruction
-                destroy(fixtureA);
-                destroy(fixtureB);
-            }
-        });
+        world.setContactListener(new WorldContactListener());
 
     }
 

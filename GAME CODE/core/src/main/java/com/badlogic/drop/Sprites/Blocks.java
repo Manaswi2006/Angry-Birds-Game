@@ -16,7 +16,7 @@ public abstract class Blocks {
     public Sprite blockSprite;
     protected SpriteBatch batch;
     private Body body;
-
+ private World world ;
 
     public Blocks(Angry_Birds_Game game, float x, float y, String texturePath) {
         this.batch = game.getBatch();
@@ -25,6 +25,7 @@ public abstract class Blocks {
         this.blockSprite.setPosition(x, y);
 
     }
+
 
     public void createBlockBody(World world, float x, float y) {
         BodyDef bodyDef = new BodyDef();
@@ -58,5 +59,12 @@ public abstract class Blocks {
 
     public Sprite getBlockSprite() {
         return this.blockSprite;
+    }
+
+    public void destroyBody() {
+        if (body != null && world != null) {
+            world.destroyBody(body);  // Removes the body from the physics world
+            body = null;  // Avoids potential null pointer issues later
+        }
     }
 }
