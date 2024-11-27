@@ -13,6 +13,7 @@ import java.awt.*;
 public class Pause3screen implements Screen {
 
     //ATTRIBUTES
+    private Profile profile;
     private Angry_Birds_Game game;
     Texture texture;
     private OrthographicCamera gamecam;
@@ -22,7 +23,7 @@ public class Pause3screen implements Screen {
     private final Rectangle replay;
 
     //CONSTRUCTOR
-    public Pause3screen(Angry_Birds_Game _game){
+    public Pause3screen(Angry_Birds_Game _game, Profile profile){
         this.game = _game;
         texture = new Texture("pause3.png");
         gamecam = new OrthographicCamera();
@@ -81,7 +82,7 @@ public class Pause3screen implements Screen {
 
             // Check if the touch is within the settings button bounds
             if (mainmenu.contains(touchX, touchY)) {
-                game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
+                game.setScreen(new LevelsMenuAllScreen(game,profile)); // Navigate to Level1Screen
                 dispose();
             }
             else if (play.contains(touchX, touchY)) {
@@ -90,7 +91,7 @@ public class Pause3screen implements Screen {
                 dispose();
             }
             else if (replay.contains(touchX, touchY)) {
-                game.setScreen(new Level3Screen(game));// Navigate to Level1Screen
+                game.setScreen(new Level3Screen(game,profile));// Navigate to Level1Screen
                 dispose();
             }
         }

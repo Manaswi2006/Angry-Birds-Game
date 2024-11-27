@@ -28,7 +28,7 @@ public abstract class Blocks {
 
     public void createBlockBody(World world, float x, float y) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody; // Blocks remain static unless they are supposed to fall
+        bodyDef.type = BodyDef.BodyType.KinematicBody; // Blocks remain static unless they are supposed to fall
         bodyDef.position.set(x / PPM, y / PPM);
 
         body = world.createBody(bodyDef);

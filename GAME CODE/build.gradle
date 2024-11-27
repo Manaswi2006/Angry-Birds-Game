@@ -79,9 +79,12 @@ subprojects {
     // Core dependencies for libGDX project
     implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
 
     // gdx-box2d-platform with natives for desktop
     implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+
   }
 }
 
@@ -91,3 +94,9 @@ eclipse {
     name = 'Angry Birds Game-parent'
   }
 }
+
+//tasks.named('verification') {
+//  // calling function to execute
+//  // tests under JUnit 5
+//  useJUnitPlatform()
+//}

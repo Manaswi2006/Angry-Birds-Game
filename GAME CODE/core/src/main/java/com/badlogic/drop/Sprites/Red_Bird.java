@@ -63,4 +63,7 @@ public class Red_Bird extends Bird{
     }
 
 
+    public Body getBody() {
+        return body;
+    }
 }

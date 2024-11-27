@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class GameWonScreen implements Screen {
 
     //ATTRIBUTES
+    private Profile profile;
     private Angry_Birds_Game game;
     private int level;
     Texture texture;
@@ -23,9 +24,10 @@ public class GameWonScreen implements Screen {
     private final Rectangle ReplayButtonBounds;
 
     //CONSTRUCTOR
-    public GameWonScreen(Angry_Birds_Game _game, int _level){
+    public GameWonScreen(Angry_Birds_Game _game, int _level, Profile profile){
         this.game = _game;
         this.level = _level;
+        this.profile = profile;
         texture = new Texture("GameWon.png");
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(1792,1024,gamecam);
@@ -115,36 +117,74 @@ public class GameWonScreen implements Screen {
             // Check if the touch is within the settings button bounds
             if (NextLevelButtonBounds.contains(touchX, touchY)) {
                 if (getLevel() == 1){
-                    game.setScreen(new Level2Screen(game)); // Navigate to SettingScreen
+                    int curr_level = profile.getLevel();
+                    if (curr_level < 2) {
+                        curr_level++;
+                        profile.setLevel(curr_level);
+                    }
+                    game.setScreen(new Level2Screen(game, profile)); // Navigate to SettingScreen
                     dispose();
                 }
                 else if (getLevel() == 2){
-                    game.setScreen(new Level3Screen(game)); // Navigate to SettingScreen
+                    int curr_level = profile.getLevel();
+                    if (curr_level < 3) {
+                        curr_level++;
+                        profile.setLevel(curr_level);
+                    }
+                    game.setScreen(new Level3Screen(game, profile)); // Navigate to SettingScreen
                     dispose();
                 }
 
                 if (getLevel() == 3){
-                    game.setScreen(new GameCompletedScreen(game)); // Navigate to SettingScreen
+                    int curr_level = profile.getLevel();
+                    if (curr_level < 4) {
+                        curr_level++;
+                        profile.setLevel(curr_level);
+                    }
+                    game.setScreen(new GameCompletedScreen(game,profile)); // Navigate to SettingScreen
                     dispose();
                 }
             }
             // Check if the touch is within the level1 button bounds
             else if (MainMenuButtonBounds.contains(touchX, touchY)) {
-                game.setScreen(new LevelsMenuAllScreen(game)); // Navigate to Level1Screen
+                // game.setScreen(new LevelsMenuAllScreen(game, profile)); // Navigate to Level1Screen
+                if (getLevel() == 1){
+                    int curr_level = profile.getLevel();
+                    if (curr_level < 2) {
+                        curr_level++;
+                        profile.setLevel(curr_level);
+                    }
+                    openLevelMenu(profile); // Navigate to SettingScreen
+                    dispose();
+                }
+                else if (getLevel() == 2){
+                    int curr_level = profile.getLevel();
+                    if (curr_level < 3) {
+                        curr_level++;
+                        profile.setLevel(curr_level);
+                    }
+                    openLevelMenu(profile); // Navigate to SettingScreen
+                    dispose();
+                }
+
+                if (getLevel() == 3){
+                    openLevelMenu(profile);// Navigate to SettingScreen
+                    dispose();
+                }
                 dispose();
             }
 
             else if (ReplayButtonBounds.contains(touchX, touchY)) {
                 if (getLevel() == 1){
-                    game.setScreen(new Level1Screen(game)); // Navigate to SettingScreen
+                    game.setScreen(new Level1Screen(game, profile)); // Navigate to SettingScreen
                     dispose();
                 }
                 else if (getLevel() == 2){
-                    game.setScreen(new Level2Screen(game)); // Navigate to SettingScreen
+                    game.setScreen(new Level2Screen(game, profile)); // Navigate to SettingScreen
                     dispose();
                 }
                 else if (getLevel() == 3){
-                    game.setScreen(new Level3Screen(game)); // Navigate to SettingScreen
+                    game.setScreen(new Level3Screen(game, profile)); // Navigate to SettingScreen
                     dispose();
                 }
             }
@@ -174,5 +214,17 @@ public class GameWonScreen implements Screen {
     @Override
     public void dispose() {
         texture.dispose();
+    }
+
+    private void openLevelMenu(Profile profile) {
+        int level = profile.getLevel();
+        if (level == 1) {
+            game.setScreen(new LevelsMenu1Screen(game,profile));
+        } else if (level == 2) {
+            game.setScreen(new LevelsMenu2Screen(game,profile));
+        } else if (level == 3) {
+            game.setScreen(new LevelsMenuAllScreen(game,profile));
+        }
+        dispose();
     }
 }

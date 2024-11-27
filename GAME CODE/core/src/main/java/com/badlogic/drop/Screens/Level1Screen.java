@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Level1Screen implements Screen  {
 
     // ATTRIBUTES
+    private Profile profile;
     private boolean isDragging = false;
     private Red_Bird currentBird = null;
     private Angry_Birds_Game game;
@@ -45,11 +46,13 @@ public class Level1Screen implements Screen  {
     private World world;  // creating world for box2d
     private Box2DDebugRenderer debugRenderer;
     // CONSTRUCTOR
-    public Level1Screen(Angry_Birds_Game game) {
+    public Level1Screen(Angry_Birds_Game game, Profile profile) {
         world = new World(new Vector2(0, -9.8f), true);  // (0, -9.8) is the gravity vector
 // for gravity
 
 // Initialize the debug renderer to visualize Box2D objects
+
+        this.profile = profile;
         debugRenderer = new Box2DDebugRenderer();
         setGame(game);
         //Ground ground = new Ground(world,0,0,4000,600);
@@ -65,7 +68,7 @@ public class Level1Screen implements Screen  {
         setBird3(new Red_Bird(getGame(), 425, 350));
         setSlingshot(new Slingshot(getGame(), 400, 240));
         //create bodies for red birds
-         bird1.createBirdBody(world , 265 , 250);
+        bird1.createBirdBody(world , 265 , 250);
         bird2.createBirdBody(world, 350, 250);  // Create Box2D body for bird2
         bird3.createBirdBody(world, 425, 350);
 
@@ -311,6 +314,28 @@ public class Level1Screen implements Screen  {
             float forceY = slingshot.getSlingSprite().getY() - currentBird.getBirdSprite().getY();
             currentBird.launch(false, 0, 0, forceX * 6, forceY * 5); // Apply scaled force
             currentBird = null;
+        }
+        if (Gdx.input.justTouched()) {
+            float touchX = Gdx.input.getX();
+            float touchY = Gdx.input.getY();
+
+            // Convert to world coordinates (invert Y-axis)
+            touchY = getGameport().getScreenHeight() - touchY;
+
+            // Check if the touch is within the defined button bounds
+            if (getGoBackButtonBounds().contains(touchX, touchY)) {
+                getGame().setScreen(new LevelsMenuAllScreen(getGame(),profile));
+                dispose();
+            } else if (getGiveUpButtonBounds().contains(touchX, touchY)) {
+                getGame().setScreen(new GameLostScreen(getGame(), 3,profile));
+                dispose();
+            } else if (getPauseButtonBounds().contains(touchX, touchY)) {
+                // Save the current level screen in the game instance
+                getGame().setSavedLevel1Screen(this);
+
+                // Navigate to the pause screen
+                getGame().setScreen(new Pause1screen(getGame(),profile));
+            }
         }
     }
 
