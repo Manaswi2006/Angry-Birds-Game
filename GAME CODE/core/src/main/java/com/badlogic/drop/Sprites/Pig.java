@@ -22,8 +22,6 @@ public abstract class Pig {
     public static final short CATEGORY_PIG = 0x0004;
 
     // Collision masks
-    public static final short MASK_BIRD = CATEGORY_BLOCK | CATEGORY_PIG| CATEGORY_GROUND;
-    public static final short MASK_BLOCK = CATEGORY_BIRD | CATEGORY_GROUND | CATEGORY_BLOCK |CATEGORY_PIG;
     public static final short MASK_PIG = CATEGORY_BIRD | CATEGORY_GROUND | CATEGORY_BLOCK |CATEGORY_PIG;
 
     public Pig(Angry_Birds_Game game, float x, float y, String texturePath) {

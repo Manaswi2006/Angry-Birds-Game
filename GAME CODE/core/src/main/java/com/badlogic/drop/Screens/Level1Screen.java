@@ -40,6 +40,9 @@ public class Level1Screen implements Screen  {
     Array<Fixture> fixturtodestroy = new Array<Fixture>(10);
     Array<Body> bodiestodestroy = new Array<Body>(10);
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private float startDragX;  // To record initial drag position X
+    private float startDragY;  // To record initial drag position Y
+
 
     private Rectangle goBackButtonBounds;
     private Rectangle giveUpButtonBounds;
@@ -234,23 +237,6 @@ public class Level1Screen implements Screen  {
         // Handle input
         handleInput();
     }
-
-    private void destroy(Fixture fixture) {
-        // Add fixture to destruction queue if not already marked
-        if (fixture != null && !fixturtodestroy.contains(fixture, true)) {
-            fixturtodestroy.add(fixture);
-
-            // If the body has no remaining fixtures after this one, queue the body for destruction
-            Body body = fixture.getBody();
-            if (body != null && body.getFixtureList().size == 1) {
-                if (!bodiestodestroy.contains(body, true)) {
-                    bodiestodestroy.add(body);
-                }
-            }
-        }
-    }
-
-
     // Handle input for button clicks
 
 
@@ -263,36 +249,53 @@ public class Level1Screen implements Screen  {
             // Check which bird was touched
             if (bird1.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
                 currentBird = bird1;
-                currentBird.launch(true, slingshot.getSlingSprite().getX(), slingshot.getSlingSprite().getY(), 0, 0);
+                startDragX = worldTouch.x;
+                startDragY = worldTouch.y;
             } else if (bird2.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
                 currentBird = bird2;
-                currentBird.launch(true, slingshot.getSlingSprite().getX(), slingshot.getSlingSprite().getY(), 0, 0);
+                startDragX = worldTouch.x;
+                startDragY = worldTouch.y;
             } else if (bird3.getBirdSprite().getBoundingRectangle().contains(worldTouch.x, worldTouch.y)) {
                 currentBird = bird3;
-                currentBird.launch(true, slingshot.getSlingSprite().getX(), slingshot.getSlingSprite().getY(), 0, 0);
+                startDragX = worldTouch.x;
+                startDragY = worldTouch.y;
             }
         }
 
-        // Handle dragging motion
         if (Gdx.input.isTouched() && currentBird != null) {
             isDragging = true;
             float dragX = Gdx.input.getX();
             float dragY = Gdx.input.getY();
 
             Vector3 worldDrag = gamecam.unproject(new Vector3(dragX, dragY, 0));
-            currentBird.dragBird(worldDrag.x, worldDrag.y);
+
+            // Limit the dragging so that bird can only be dragged behind the slingshot
+            float maxDragDistance = 100f;  // Define a maximum distance for dragging
+            Vector2 slingshotPos = new Vector2(slingshot.getSlingSprite().getX(), slingshot.getSlingSprite().getY());
+            Vector2 dragPos = new Vector2(worldDrag.x, worldDrag.y);
+
+            if (dragPos.dst(slingshotPos) > maxDragDistance) {
+                dragPos = slingshotPos.cpy().add(dragPos.sub(slingshotPos).nor().scl(maxDragDistance));
+            }
+
+            currentBird.dragBird(dragPos.x, dragPos.y);  // Move bird to dragged position visually
         }
 
-        // Release bird when touch is lifted
         if (!Gdx.input.isTouched() && isDragging && currentBird != null) {
             isDragging = false;
 
-            // Calculate force based on slingshot position and release point
-            float forceX = slingshot.getSlingSprite().getX() - currentBird.getBirdSprite().getX();
-            float forceY = slingshot.getSlingSprite().getY() - currentBird.getBirdSprite().getY();
-            currentBird.launch(false, 0, 0, forceX * 6, forceY * 3); // Apply scaled force
-            currentBird = null;
+            // Calculate force based on start and current position
+            float releaseX = currentBird.getBirdSprite().getX();
+            float releaseY = currentBird.getBirdSprite().getY();
+
+            float forceX = (startDragX - releaseX) * 3;  // Reverse to launch forward and scale to increase the power of the launch
+            float forceY = (startDragY - releaseY) * 3;  // Reverse to launch forward and scale to increase the power of the launch
+
+            // Launch the bird with the calculated force
+            currentBird.launch(false, 0, 0, forceX, forceY);
+            currentBird = null;  // Clear the current bird after launch
         }
+
         if (Gdx.input.justTouched()) {
             float touchX = Gdx.input.getX();
             float touchY = Gdx.input.getY();
@@ -305,7 +308,7 @@ public class Level1Screen implements Screen  {
                 getGame().setScreen(new LevelsMenuAllScreen(getGame(),profile));
                 dispose();
             } else if (getGiveUpButtonBounds().contains(touchX, touchY)) {
-                getGame().setScreen(new GameLostScreen(getGame(), 3,profile));
+                getGame().setScreen(new GameLostScreen(getGame(), 1,profile));
                 dispose();
             } else if (getPauseButtonBounds().contains(touchX, touchY)) {
                 // Save the current level screen in the game instance
@@ -316,6 +319,7 @@ public class Level1Screen implements Screen  {
             }
         }
     }
+
 
 
 

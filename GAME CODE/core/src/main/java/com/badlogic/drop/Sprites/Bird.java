@@ -31,12 +31,6 @@ public abstract class Bird {
         isReadyToLaunch = true;
     }
 
-    public void dragBird(float x, float y) {
-        if (isReadyToLaunch && body != null) {
-            body.setTransform(x / PPM, y / PPM, 0); // Move with drag coordinates
-        }
-    }
-
     public void releaseBird(float forceX, float forceY) {
         if (isReadyToLaunch && body != null) {
             body.setType(BodyDef.BodyType.DynamicBody); // Allow movement
@@ -60,4 +54,10 @@ public abstract class Bird {
     public SpriteBatch getBatch() {
         return batch;
     }
+    public void dragBird(float x, float y) {
+        if (body != null) {
+            body.setTransform(x / PPM, y / PPM, 0);  // Set the position of the bird body
+        }
+    }
+
 }
