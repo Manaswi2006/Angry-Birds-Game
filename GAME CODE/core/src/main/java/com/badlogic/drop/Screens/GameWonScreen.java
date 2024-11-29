@@ -122,10 +122,11 @@ public class GameWonScreen implements Screen {
                 } else if (getLevel() == 3 && curr_level < 4) {
                     profile.setLevel(4);
                 }
-                Profile.saveProfiles(profile, "profile.txt");
+                //Profile.saveProfiles(profile, "profile.txt");
                 navigateToNextLevel();
             } else if (MainMenuButtonBounds.contains(touchX, touchY)) {
-                openLevelMenu(profile);
+                //openLevelMenu(profile);
+                game.setScreen(new LevelsMenu2Screen(game, profile));
             } else if (ReplayButtonBounds.contains(touchX, touchY)) {
                 replayCurrentLevel();
             }

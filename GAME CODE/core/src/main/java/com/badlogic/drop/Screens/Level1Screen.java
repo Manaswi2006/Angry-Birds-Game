@@ -69,14 +69,14 @@ public class Level1Screen implements Screen  {
         getGamecam().position.set(1792 / 2f, 1024 / 2f, 0);
 
         // Initialize birds and slingshot
-        setBird1(new Red_Bird(getGame(), 425, 350));
-        setBird2(new Red_Bird(getGame(), 425, 350));
-        setBird3(new Red_Bird(getGame(), 425, 350));
+        setBird1(new Red_Bird(getGame(), 450, 375));
+        setBird2(new Red_Bird(getGame(), 450, 375));
+        setBird3(new Red_Bird(getGame(), 450, 375));
         setSlingshot(new Slingshot(getGame(), 400, 240));
         //create bodies for red birds
-        bird1.createBirdBody(world , 425, 350);
-        bird2.createBirdBody(world, 425, 350);  // Create Box2D body for bird2
-        bird3.createBirdBody(world, 425, 350);
+        bird1.createBirdBody(world , 450, 375);
+        bird2.createBirdBody(world, 450, 375);  // Create Box2D body for bird2
+        bird3.createBirdBody(world, 450, 375);
 
 
         // Initialize TowerGenerator and generate tower
@@ -311,8 +311,8 @@ public class Level1Screen implements Screen  {
             float releaseX = currentBird.getBirdSprite().getX();
             float releaseY = currentBird.getBirdSprite().getY();
 
-            float forceX = (startDragX - releaseX) * 3;  // Reverse to launch forward and scale to increase the power of the launch
-            float forceY = (startDragY - releaseY) * 3;  // Reverse to launch forward and scale to increase the power of the launch
+            float forceX = (startDragX - releaseX) * 1.5f;  // Reverse to launch forward and scale to increase the power of the launch
+            float forceY = (startDragY - releaseY) * 1.5f;  // Reverse to launch forward and scale to increase the power of the launch
 
             // Launch the bird with the calculated force
             currentBird.launch(false, 0, 0, forceX, forceY);
