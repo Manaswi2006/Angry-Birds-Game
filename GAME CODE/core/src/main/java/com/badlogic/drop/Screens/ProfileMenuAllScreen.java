@@ -1,6 +1,7 @@
 package com.badlogic.drop.Screens;
 
 import com.badlogic.drop.Angry_Birds_Game;
+import com.badlogic.drop.Screens.Profile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -14,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class ProfileMenuAllScreen implements Screen {
 
-
     private Angry_Birds_Game game;
     private Texture texture;
     private OrthographicCamera gamecam;
@@ -25,7 +25,7 @@ public class ProfileMenuAllScreen implements Screen {
     private final Rectangle GoBackButtonBounds;
     private BitmapFont font;
     private Profile[] profiles;
-    private static final String PROFILE_FILE = "profiles.ser";
+    private static final String PROFILE_FILE = "profiles.txt";
 
     public ProfileMenuAllScreen(Angry_Birds_Game _game) {
         this.game = _game;
@@ -45,14 +45,16 @@ public class ProfileMenuAllScreen implements Screen {
         font.getData().setScale(2);
 
         // Load profiles or create new ones
-        profiles = Profile.loadProfiles(PROFILE_FILE);
-        if (profiles == null) {
-            profiles = new Profile[] {
-                new Profile("User 1", 1),
-                new Profile("User 2", 1),
-                new Profile("User 3", 1)
-            };
-            Profile.saveProfiles(profiles, PROFILE_FILE);
+        profiles = new Profile[] {
+            Profile.loadProfile(PROFILE_FILE + "_1"),
+            Profile.loadProfile(PROFILE_FILE + "_2"),
+            Profile.loadProfile(PROFILE_FILE + "_3")
+        };
+        for (int i = 0; i < profiles.length; i++) {
+            if (profiles[i] == null) {
+                profiles[i] = new Profile("User " + (i + 1), 1);
+                Profile.saveProfiles(profiles[i], PROFILE_FILE + "_" + (i + 1));
+            }
         }
     }
 
@@ -103,11 +105,11 @@ public class ProfileMenuAllScreen implements Screen {
     private void openLevelMenu(Profile profile) {
         int level = profile.getLevel();
         if (level == 1) {
-            game.setScreen(new LevelsMenu1Screen(game,profile));
+            game.setScreen(new LevelsMenu1Screen(game, profile));
         } else if (level == 2) {
-            game.setScreen(new LevelsMenu2Screen(game,profile));
+            game.setScreen(new LevelsMenu2Screen(game, profile));
         } else if (level == 3) {
-            game.setScreen(new LevelsMenuAllScreen(game,profile));
+            game.setScreen(new LevelsMenuAllScreen(game, profile));
         }
         dispose();
     }
@@ -138,6 +140,8 @@ public class ProfileMenuAllScreen implements Screen {
         font.dispose();
 
         // Save profiles on exit
-        Profile.saveProfiles(profiles, PROFILE_FILE);
+        for (int i = 0; i < profiles.length; i++) {
+            Profile.saveProfiles(profiles[i], PROFILE_FILE + "_" + (i + 1));
+        }
     }
 }

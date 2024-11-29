@@ -1,6 +1,8 @@
 package com.badlogic.drop.Scenes;
 
 import com.badlogic.drop.Angry_Birds_Game;
+import com.badlogic.drop.Screens.GameWonScreen;
+import com.badlogic.drop.Screens.Profile;
 import com.badlogic.drop.Sprites.*;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -11,12 +13,16 @@ public class TowerGenerator {
     private Angry_Birds_Game game;
     private Array<Blocks> blockTower;
     private Array<Pig> pigs;
+    private int currentLevel;
+    private Profile currentProfile;
 
     // Constructor
-    public TowerGenerator(Angry_Birds_Game game) {
+    public TowerGenerator(Angry_Birds_Game game, int level, Profile profile) {
         this.game = game;
         blockTower = new Array<>();
         pigs = new Array<>();
+        this.currentLevel = level;
+        this.currentProfile = profile;
     }
 
     // Method to generate a tower
@@ -36,7 +42,7 @@ public class TowerGenerator {
 
         // Place multiple pigs on random blocks
         // Place multiple pigs on random blocks
-        int numPigs = random.nextInt(3) + 2; // Place between 2 and 4 pigs
+        int numPigs = random.nextInt(2) + 1; // Place between 2 and 4 pigs
         for (int k = 0; k < numPigs; k++) {
             int pigPosition = random.nextInt(blockTower.size);
             Blocks pigBlock = blockTower.get(pigPosition);
@@ -91,17 +97,34 @@ public class TowerGenerator {
 
     // Render method for blocks and pigs
     public void render() {
+        boolean allPigsDestroyed = true;
+
         for (Blocks block : blockTower) {
             if (!block.isDestroyed()) {  // Only render blocks that are not destroyed
                 block.render(game.getBatch());
             }
         }
+
         for (Pig pig : pigs) {
             if (!pig.isDestroyed()) {  // Same logic for pigs
                 pig.render(game.getBatch());
+                allPigsDestroyed = false;
             }
         }
+
+        // Check if all pigs are destroyed and if so, switch to the GameWonScreen
+        if (allPigsDestroyed) {
+            goToGameWonScreen();
+        }
     }
+
+    private void goToGameWonScreen() {
+        // Assuming _game, _level, and profile are defined somewhere in the class or passed accordingly
+        int _level = currentLevel; // or however you define the current level
+        Profile profile = currentProfile; // or however you manage player profiles
+        game.setScreen(new GameWonScreen(game, _level, profile));
+    }
+
 
 
     // Dispose resources for all blocks and pigs

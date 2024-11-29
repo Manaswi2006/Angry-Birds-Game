@@ -57,7 +57,7 @@ public class Level3Screen implements Screen {
         setSlingshot(new Slingshot(getGame(), 410, 300));
 
         // Initialize TowerGenerator and generate tower
-        setTowerGenerator(new TowerGenerator(getGame()));
+        setTowerGenerator(new TowerGenerator(getGame(), 3, profile));
         getTowerGenerator().generateTower(1400, 225, world);
 
         // Define button bounds

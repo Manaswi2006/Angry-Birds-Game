@@ -2,8 +2,7 @@ package com.badlogic.drop.Screens;
 
 import java.io.*;
 
-public class Profile implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Profile {
     private String name;
     private int level;
 
@@ -25,22 +24,27 @@ public class Profile implements Serializable {
     }
 
     // Save profiles to a file
-    public static void saveProfiles(Profile[] profiles, String filename) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
-            oos.writeObject(profiles);
+    public static void saveProfiles(Profile profile, String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            writer.write(profile.getName() + "," + profile.getLevel());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     // Load profiles from a file
-    public static Profile[] loadProfiles(String filename) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            return (Profile[]) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+    public static Profile loadProfile(String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line = reader.readLine();
+            if (line != null) {
+                String[] parts = line.split(",");
+                String name = parts[0];
+                int level = Integer.parseInt(parts[1]);
+                return new Profile(name, level);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
-
 }

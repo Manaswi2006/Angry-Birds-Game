@@ -42,6 +42,8 @@ public class Level1Screen implements Screen  {
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private float startDragX;  // To record initial drag position X
     private float startDragY;  // To record initial drag position Y
+    private ShapeRenderer trajectoryRenderer = new ShapeRenderer();
+
 
 
     private Rectangle goBackButtonBounds;
@@ -67,18 +69,18 @@ public class Level1Screen implements Screen  {
         getGamecam().position.set(1792 / 2f, 1024 / 2f, 0);
 
         // Initialize birds and slingshot
-        setBird1(new Red_Bird(getGame(), 265, 250));
-        setBird2(new Red_Bird(getGame(), 350, 250));
+        setBird1(new Red_Bird(getGame(), 425, 350));
+        setBird2(new Red_Bird(getGame(), 425, 350));
         setBird3(new Red_Bird(getGame(), 425, 350));
         setSlingshot(new Slingshot(getGame(), 400, 240));
         //create bodies for red birds
-        bird1.createBirdBody(world , 265 , 250);
-        bird2.createBirdBody(world, 350, 250);  // Create Box2D body for bird2
+        bird1.createBirdBody(world , 425, 350);
+        bird2.createBirdBody(world, 425, 350);  // Create Box2D body for bird2
         bird3.createBirdBody(world, 425, 350);
 
 
         // Initialize TowerGenerator and generate tower
-        setTowerGenerator(new TowerGenerator(getGame()));
+        setTowerGenerator(new TowerGenerator(getGame(), 1, profile));
         getTowerGenerator().generateTower(1200, 225,world);
 
         // Define button bounds
@@ -233,13 +235,34 @@ public class Level1Screen implements Screen  {
 
         // Debug rendering
         debugRenderer.render(world, gamecam.combined);
-
+        //drawTrajectory();
         // Handle input
         handleInput();
     }
     // Handle input for button clicks
 
 
+    private void drawTrajectory() {
+        if (isDragging && currentBird != null) {
+            trajectoryRenderer.setProjectionMatrix(gamecam.combined);
+            trajectoryRenderer.begin(ShapeRenderer.ShapeType.Line);
+            trajectoryRenderer.setColor(Color.RED);
+
+            Vector2 startPos = new Vector2(currentBird.getBirdSprite().getX(), currentBird.getBirdSprite().getY());
+            Vector2 force = new Vector2(startDragX - currentBird.getBirdSprite().getX(), startDragY - currentBird.getBirdSprite().getY()).scl(3);
+            Vector2 velocity = new Vector2(force.x, force.y).scl(0.05f);
+            Vector2 gravity = world.getGravity().scl(0.05f);
+
+            Vector2 point = new Vector2(startPos);
+            for (int i = 0; i < 200; i++) {
+                trajectoryRenderer.line(point.x, point.y, point.x + velocity.x, point.y + velocity.y);
+                point.add(velocity);
+                velocity.add(gravity);
+            }
+
+            trajectoryRenderer.end();
+        }
+    }
     private void handleInput() {
         if (Gdx.input.justTouched()) {
             float touchX = Gdx.input.getX();
