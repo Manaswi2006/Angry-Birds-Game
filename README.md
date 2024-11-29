@@ -42,9 +42,9 @@ Welcome to the **Angry Birds Game** project! This is a 2D physics-based game ins
 
 ### **Prerequisites**
 Ensure you have the following installed:
-1. [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) (version 8+)
-2. [Gradle](https://gradle.org/install/)
-3. [LibGDX](https://libgdx.com/)
+
+1. [Gradle](https://gradle.org/install/)
+2. [LibGDX](https://libgdx.com/)
 
 ### **Steps to Run**
 1. **Clone the Repository**:
