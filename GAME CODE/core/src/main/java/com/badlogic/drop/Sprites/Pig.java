@@ -92,4 +92,15 @@ public abstract class Pig {
     public void setDestroyed(boolean b) {
         destroyed = b;
     }
+    public void makeBodyNonCollidable() {
+        if (body != null) {
+            Filter filter = new Filter();
+            filter.maskBits = 0;  // No collision with anything
+            for (Fixture fixture : body.getFixtureList()) {
+                fixture.setFilterData(filter);
+            }
+            body.setAwake(false);  // Put the body to sleep to save processing
+        }
+    }
+
 }

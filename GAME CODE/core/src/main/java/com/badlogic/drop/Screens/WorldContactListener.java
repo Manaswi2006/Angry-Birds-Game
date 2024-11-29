@@ -59,6 +59,7 @@ public class WorldContactListener implements ContactListener {
             if (!block.isDestroyed()) {
                 Gdx.app.log("WorldContactListener", "Marking block for destruction: " + block);
                 block.setDestroyed(true);
+                block.makeBodyNonCollidable();
                 //world.destroyBody(body);// Set destroyed to true to avoid multiple hits
                 worldManager.addToDestroyQueue(block.getBody());
             }
@@ -70,7 +71,8 @@ public class WorldContactListener implements ContactListener {
             Pig pig = (Pig) fixture.getUserData();
             if (!pig.isDestroyed()) {
                 Gdx.app.log("WorldContactListener", "Marking pig for destruction: " + pig);
-                pig.setDestroyed(true);  // Set destroyed to true to avoid multiple hit
+                pig.setDestroyed(true);
+                pig.makeBodyNonCollidable();// Set destroyed to true to avoid multiple hit
                 worldManager.addToDestroyQueue(pig.getBody());
             }
         }

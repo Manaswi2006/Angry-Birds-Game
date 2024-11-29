@@ -100,4 +100,15 @@ public abstract class Blocks {
     public Body getBody() {
         return body;
     }
+    public void makeBodyNonCollidable() {
+        if (body != null) {
+            Filter filter = new Filter();
+            filter.maskBits = 0;  // No collision with anything
+            for (Fixture fixture : body.getFixtureList()) {
+                fixture.setFilterData(filter);
+            }
+            body.setAwake(false);  // Put the body to sleep to save processing
+        }
+    }
+
 }
