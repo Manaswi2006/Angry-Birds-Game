@@ -33,18 +33,24 @@ public class Profile {
     }
 
     // Load profiles from a file
+    // Load profiles from a file
     public static Profile loadProfile(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
             if (line != null) {
                 String[] parts = line.split(",");
-                String name = parts[0];
-                int level = Integer.parseInt(parts[1]);
-                return new Profile(name, level);
+                if (parts.length == 2) {
+                    String name = parts[0];
+                    int level = Integer.parseInt(parts[1]);
+                    return new Profile(name, level);
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Profile failed to load");
+        } catch (NumberFormatException e) {
+            System.out.println("Profile failed to parse file");
         }
         return null;
     }
+
 }
