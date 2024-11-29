@@ -83,7 +83,7 @@ public class Level1Screen implements Screen  {
         setGiveUpButtonBounds(new Rectangle(1521, 1024 - 47 - 110, 228, 110));
         setPauseButtonBounds(new Rectangle(230, 1024 - 26 - 134, 164, 171));
 
-    //code for the collision part
+        //code for the collision part
         world.setContactListener(new WorldContactListener());
 
     }
@@ -290,7 +290,7 @@ public class Level1Screen implements Screen  {
             // Calculate force based on slingshot position and release point
             float forceX = slingshot.getSlingSprite().getX() - currentBird.getBirdSprite().getX();
             float forceY = slingshot.getSlingSprite().getY() - currentBird.getBirdSprite().getY();
-            currentBird.launch(false, 0, 0, forceX * 6, forceY * 5); // Apply scaled force
+            currentBird.launch(false, 0, 0, forceX * 6, forceY * 3); // Apply scaled force
             currentBird = null;
         }
         if (Gdx.input.justTouched()) {

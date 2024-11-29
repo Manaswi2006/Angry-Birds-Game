@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Slingshot {
     private Sprite SlingSprite;
     private SpriteBatch batch;
+    private static final float PPM = 100.0f; // Pixels per meter
+
 
     public Slingshot(Angry_Birds_Game game, float x, float y) {
         this.batch = game.getBatch();

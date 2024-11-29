@@ -9,25 +9,37 @@ import com.badlogic.gdx.physics.box2d.*;
 import static com.badlogic.drop.Sprites.Bird.PPM;
 
 public abstract class Pig {
-    private Sprite PigSprite;
+    private Sprite PigSprite;  // Correct sprite instance is already initialized
     private SpriteBatch batch;
     private Body body;
+    private boolean destroyed = false;
+    // Constants for collision categories
+    public static final short CATEGORY_BIRD = 0x0001;  // 0000000000000001
+    public static final short CATEGORY_BLOCK = 0x0002; // 0000000000000010
+    public static final short CATEGORY_PIG = 0x0004;   // 0000000000000100
 
-    public Pig(Angry_Birds_Game game, float x, float y,String texturepath) {
+    // Collision bits
+    public static final short MASK_BIRD = CATEGORY_BLOCK | CATEGORY_PIG;  // Birds collide with blocks and pigs
+    public static final short MASK_BLOCK = CATEGORY_BIRD;                 // Blocks collide with birds
+    public static final short MASK_PIG = CATEGORY_BIRD;                   // Pigs collide with birds
+
+
+    public Pig(Angry_Birds_Game game, float x, float y, String texturepath) {
         this.batch = game.getBatch();
-        Texture birdTexture = new Texture(texturepath);  // Replace with actual bird image path
+        Texture birdTexture = new Texture(texturepath);  // Load texture for the pig
         PigSprite = new Sprite(birdTexture);
-        PigSprite.setPosition(x, y);  // Set initial coordinates
+        PigSprite.setPosition(x, y);  // Set initial position of the pig
     }
+
     public void createPigBody(World world, float x, float y) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody; // Pigs should move when hit
+        bodyDef.type = BodyDef.BodyType.DynamicBody;  // Pigs should react to forces
         bodyDef.position.set(x / PPM, y / PPM);
 
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(15 / PPM); // Smaller radius for pigs
+        circle.setRadius(15 / PPM);  // Adjust size as needed
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
@@ -35,16 +47,32 @@ public abstract class Pig {
         fixtureDef.friction = 0.4f;
         fixtureDef.restitution = 0.5f;
 
+
         body.createFixture(fixtureDef);
         circle.dispose();
     }
-    // Renders the bird on the screen using the provided SpriteBatch
-    public void render() {
-        PigSprite.draw(batch);
+
+    public void render(SpriteBatch batch) {
+        if (!destroyed) {
+            PigSprite.draw(batch);  // Use PigSprite instead of sprite
+        }
     }
 
-    // Releases resources used by the bird
     public void dispose() {
-        PigSprite.getTexture().dispose();
+        PigSprite.getTexture().dispose();  // Properly dispose of texture
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+    public Body getBody() {
+        return body;
+    }
+    public void destroyBody(World world) {
+        if (body != null) {
+            world.destroyBody(body);  // Remove the physics body from the world
+            body = null;
+            destroyed = true;  // Mark as destroyed to prevent rendering
+        }
     }
 }

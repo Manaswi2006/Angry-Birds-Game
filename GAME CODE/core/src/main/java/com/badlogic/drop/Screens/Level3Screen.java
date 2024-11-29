@@ -182,11 +182,11 @@ public class Level3Screen implements Screen {
 
         // Render birds, slingshot, and tower with pigs
 
-        getTowerGenerator().render();
-        getSlingshot().render();
-        getBird1().render();
-        getBird2().render();
-        getBird3().render();
+//        getTowerGenerator().render();
+//        getSlingshot().render();
+//        getBird1().render();
+//        getBird2().render();
+//        getBird3().render();
 
         getGame().getBatch().end();
 

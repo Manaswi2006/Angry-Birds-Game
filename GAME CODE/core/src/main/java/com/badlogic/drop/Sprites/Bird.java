@@ -20,6 +20,7 @@ public abstract class Bird {
         Texture birdTexture = new Texture(texturePath);  // Replace with actual bird image path
         birdSprite = new Sprite(birdTexture);
         birdSprite.setPosition(x, y);  // Set initial coordinates
+
     }
 
     public void moveToSlingshot(float x, float y) {

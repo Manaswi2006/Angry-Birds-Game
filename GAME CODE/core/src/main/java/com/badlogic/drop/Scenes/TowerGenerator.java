@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Random;
 
 public class TowerGenerator {
-
+    private static final float PPM = 100.0f;
     private Angry_Birds_Game game;
     private Array<Blocks> blockTower;
     private Array<Pig> pigs;
@@ -92,12 +92,17 @@ public class TowerGenerator {
     // Render method for blocks and pigs
     public void render() {
         for (Blocks block : blockTower) {
-            block.render();
+            if (!block.isDestroyed()) {  // Only render blocks that are not destroyed
+                block.render(game.getBatch());
+            }
         }
         for (Pig pig : pigs) {
-            pig.render();
+            if (!pig.isDestroyed()) {  // Same logic for pigs
+                pig.render(game.getBatch());
+            }
         }
     }
+
 
     // Dispose resources for all blocks and pigs
     public void dispose() {
