@@ -7,9 +7,10 @@ import com.badlogic.drop.Sprites.Ground;
 import com.badlogic.drop.Sprites.Pig;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 
 public class WorldContactListener implements ContactListener {
-
+    WorldManager worldManager = new WorldManager();
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
@@ -22,18 +23,11 @@ public class WorldContactListener implements ContactListener {
             (fixB.getUserData() != null ? fixB.getUserData().getClass().getSimpleName() : "null")
         );
 
-        // Bird hits block
+        // Bird hits block or pig
         if (isBirdHitBlock(fixA, fixB)) {
-            handleBlockCollision(fixB);
-        } else if (isBirdHitBlock(fixB, fixA)) {
-            handleBlockCollision(fixA);
-        }
-
-        // Bird hits pig
-        if (isBirdHitPig(fixA, fixB)) {
-            handlePigCollision(fixB);
-        } else if (isBirdHitPig(fixB, fixA)) {
-            handlePigCollision(fixA);
+            handleBlockCollision(fixA, fixB);
+        } else if (isBirdHitPig(fixA, fixB)) {
+            handlePigCollision(fixA, fixB);
         }
 
         // Block or pig hits ground
@@ -59,22 +53,25 @@ public class WorldContactListener implements ContactListener {
             fixB.getUserData() instanceof Ground;
     }
 
-    private void handleBlockCollision(Fixture fixture) {
+    private void handleBlockCollision(Fixture fixture, Fixture fixB) {
         if (fixture.getUserData() instanceof Blocks) {
             Blocks block = (Blocks) fixture.getUserData();
             if (!block.isDestroyed()) {
-                Gdx.app.log("WorldContactListener", "Destroying block: " + block);
-                block.destroyBody();
+                Gdx.app.log("WorldContactListener", "Marking block for destruction: " + block);
+                block.setDestroyed(true);
+                //world.destroyBody(body);// Set destroyed to true to avoid multiple hits
+                worldManager.addToDestroyQueue(block.getBody());
             }
         }
     }
 
-    private void handlePigCollision(Fixture fixture) {
+    private void handlePigCollision(Fixture fixture, Fixture fixB) {
         if (fixture.getUserData() instanceof Pig) {
             Pig pig = (Pig) fixture.getUserData();
             if (!pig.isDestroyed()) {
-                Gdx.app.log("WorldContactListener", "Destroying pig: " + pig);
-                pig.destroyBody(pig.getBody().getWorld());
+                Gdx.app.log("WorldContactListener", "Marking pig for destruction: " + pig);
+                pig.setDestroyed(true);  // Set destroyed to true to avoid multiple hit
+                worldManager.addToDestroyQueue(pig.getBody());
             }
         }
     }
@@ -88,3 +85,25 @@ public class WorldContactListener implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) { }
 }
+
+class WorldManager {
+    private Array<Body> bodiesToDestroy;
+
+    public WorldManager() {
+        bodiesToDestroy = new Array<>();
+    }
+
+    public void addToDestroyQueue(Body body) {
+        bodiesToDestroy.add(body);
+    }
+
+    public void processDestroyQueue(World world) {
+        for (Body body : bodiesToDestroy) {
+            if (body != null) {
+                world.destroyBody(body);
+            }
+        }
+        bodiesToDestroy.clear(); // Clear the queue after processing
+    }
+}
+

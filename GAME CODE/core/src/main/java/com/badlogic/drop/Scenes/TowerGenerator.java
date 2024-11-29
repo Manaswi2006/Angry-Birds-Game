@@ -22,11 +22,11 @@ public class TowerGenerator {
     // Method to generate a tower
     public void generateTower(float baseX, float baseY, World world) {
         Random random = new Random();
-        int towerWidth = random.nextInt(4) + 2; // Random width of 2 to 5 blocks
+        int towerWidth = random.nextInt(3) + 2; // Random width of 2 to 5 blocks
 
         // Generate blocks for each column in the tower with varying heights
         for (int i = 0; i < towerWidth; i++) {
-            int columnHeight = random.nextInt(5) + 1; // Random height of 1 to 5 blocks for each column
+            int columnHeight = random.nextInt(3) + 2; // Random height of 1 to 5 blocks for each column
             for (int j = 0; j < columnHeight; j++) {
                 Blocks block = createRandomBlock(baseX + i * 80, baseY + j * 70, random);
                 block.createBlockBody(world, baseX + i * 80, baseY + j * 70);

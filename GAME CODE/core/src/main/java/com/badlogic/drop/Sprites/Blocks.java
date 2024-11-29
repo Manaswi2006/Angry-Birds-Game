@@ -49,7 +49,7 @@ public abstract class Blocks {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = box;
         fixtureDef.density = 1.0f;  // Increase density to make blocks more stable
-        fixtureDef.friction = 0.9f;  // Increase friction to prevent sliding
+        fixtureDef.friction = 2.0f;  // Increase friction to prevent sliding
 
         fixtureDef.restitution = 0.1f;
 
@@ -86,12 +86,18 @@ public abstract class Blocks {
         return destroyed;
     }
 
-    public void destroyBody() {
-        if (body != null && world != null) {
-            Gdx.app.log("Blocks", "Destroying block body: " + this);
-            world.destroyBody(body);
-            body = null;
-            destroyed = true;
+    public void deactivateBody() {
+        if (body != null) {
+            body.setActive(false);  // Deactivate the body so it no longer interacts with other objects
+            destroyed = true;       // Mark it as destroyed so we don't render it anymore
         }
+    }
+
+    public void setDestroyed(boolean b) {
+        destroyed = b;
+    }
+
+    public Body getBody() {
+        return body;
     }
 }

@@ -56,7 +56,7 @@ public class Level1Screen implements Screen  {
         this.profile = profile;
         debugRenderer = new Box2DDebugRenderer();
         setGame(game);
-        Ground ground = new Ground(world,0,0,4000,250);
+        Ground ground = new Ground(world,0,0,4000,325);
         // Initialize texture and camera
         setTexture(new Texture("Level1.png"));
         setGamecam(new OrthographicCamera());
