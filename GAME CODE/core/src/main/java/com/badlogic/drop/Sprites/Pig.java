@@ -39,11 +39,11 @@ public abstract class Pig {
         body = world.createBody(bodyDef);
         body.setUserData(this);  // Critical: Set UserData on body
 
-        CircleShape circle = new CircleShape();
-        circle.setRadius(15 / PPM);
+        PolygonShape box = new PolygonShape();
+        box.setAsBox(pigSprite.getWidth() / 2 / PPM, pigSprite.getHeight() / 2 / PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = circle;
+        fixtureDef.shape = box;
         fixtureDef.density = 0.9f;
         fixtureDef.friction = 2.0f;
         fixtureDef.restitution = 0.5f;
@@ -55,7 +55,7 @@ public abstract class Pig {
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);  // Also set UserData on fixture
 
-        circle.dispose();
+        box.dispose();
     }
 
     public void render(SpriteBatch batch) {
