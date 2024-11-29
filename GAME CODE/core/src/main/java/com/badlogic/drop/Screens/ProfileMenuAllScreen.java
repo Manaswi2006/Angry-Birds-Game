@@ -74,9 +74,9 @@ public class ProfileMenuAllScreen implements Screen {
         game.getBatch().draw(texture, 0, 0);
 
         // Draw profile names and levels
-        font.draw(game.getBatch(), profiles[0].getName() + " - Level " + profiles[0].getLevel(), 800, 1024 - 467 - 35);
-        font.draw(game.getBatch(), profiles[1].getName() + " - Level " + profiles[1].getLevel(), 800, 1024 - 605 - 35);
-        font.draw(game.getBatch(), profiles[2].getName() + " - Level " + profiles[2].getLevel(), 800, 1024 - 744 - 35);
+        font.draw(game.getBatch(), profiles[0].getName(), 800, 1024 - 467 - 35);
+        font.draw(game.getBatch(), profiles[1].getName(), 800, 1024 - 605 - 35);
+        font.draw(game.getBatch(), profiles[2].getName(), 800, 1024 - 744 - 35);
         game.getBatch().end();
 
         handleInput();
@@ -104,13 +104,13 @@ public class ProfileMenuAllScreen implements Screen {
 
     private void openLevelMenu(Profile profile) {
         int level = profile.getLevel();
-        if (level == 1) {
-            game.setScreen(new LevelsMenu1Screen(game, profile));
-        } else if (level == 2) {
-            game.setScreen(new LevelsMenu2Screen(game, profile));
-        } else if (level == 3) {
-            game.setScreen(new LevelsMenuAllScreen(game, profile));
-        }
+//        if (level == 1) {
+        game.setScreen(new LevelsMenu1Screen(game, profile));
+//        } else if (level == 2) {
+//            game.setScreen(new LevelsMenu2Screen(game, profile));
+//        } else if (level == 3) {
+//            game.setScreen(new LevelsMenuAllScreen(game, profile));
+//        }
         dispose();
     }
 

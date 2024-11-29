@@ -2,10 +2,7 @@ package com.badlogic.drop.Screens;
 import com.badlogic.drop.Screens.WorldContactListener;
 
 import com.badlogic.drop.Angry_Birds_Game;
-import com.badlogic.drop.Sprites.Bird;
-import com.badlogic.drop.Sprites.Ground;
-import com.badlogic.drop.Sprites.Red_Bird;
-import com.badlogic.drop.Sprites.Slingshot;
+import com.badlogic.drop.Sprites.*;
 import com.badlogic.drop.Scenes.TowerGenerator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -27,12 +24,12 @@ public class Level3Screen implements Screen  {
     // ATTRIBUTES
     private Profile profile;
     private boolean isDragging = false;
-    private Red_Bird currentBird = null;
+    private Bird currentBird = null;
     private Angry_Birds_Game game;
     private Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gameport;
-    private Red_Bird bird1;
+    private Black_Bird bird1;
     private Red_Bird bird2;
     private Red_Bird bird3;
     private Slingshot slingshot;
@@ -69,7 +66,7 @@ public class Level3Screen implements Screen  {
         getGamecam().position.set(1792 / 2f, 1024 / 2f, 0);
 
         // Initialize birds and slingshot
-        setBird1(new Red_Bird(getGame(), 425, 350));
+        setBird1(new Black_Bird(getGame(), 425, 350));
         setBird2(new Red_Bird(getGame(), 425, 350));
         setBird3(new Red_Bird(getGame(), 425, 350));
         setSlingshot(new Slingshot(getGame(), 400, 240));
@@ -131,7 +128,7 @@ public class Level3Screen implements Screen  {
     }
 
     public void setBird1(Bird bird1) {
-        this.bird1 = (Red_Bird) bird1;
+        this.bird1 = (Black_Bird) bird1;
     }
 
     public Bird getBird2() {
@@ -338,7 +335,7 @@ public class Level3Screen implements Screen  {
                 getGame().setSavedLevel3Screen(this);
 
                 // Navigate to the pause screen
-                getGame().setScreen(new Pause1screen(getGame(),profile));
+                getGame().setScreen(new Pause3screen(getGame(),profile));
             }
         }
     }

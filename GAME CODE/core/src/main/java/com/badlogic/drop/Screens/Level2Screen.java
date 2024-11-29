@@ -324,7 +324,7 @@ public class Level2Screen implements Screen  {
 
             // Check if the touch is within the defined button bounds
             if (getGoBackButtonBounds().contains(touchX, touchY)) {
-                getGame().setScreen(new LevelsMenuAllScreen(getGame(),profile));
+                getGame().setScreen(new LevelsMenu2Screen(getGame(),profile));
                 dispose();
             } else if (getGiveUpButtonBounds().contains(touchX, touchY)) {
                 getGame().setScreen(new GameLostScreen(getGame(), 2,profile));
