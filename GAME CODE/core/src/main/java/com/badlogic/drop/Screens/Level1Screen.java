@@ -311,8 +311,8 @@ public class Level1Screen implements Screen  {
             float releaseX = currentBird.getBirdSprite().getX();
             float releaseY = currentBird.getBirdSprite().getY();
 
-            float forceX = (startDragX - releaseX) * 3;  // Reverse to launch forward and scale to increase the power of the launch
-            float forceY = (startDragY - releaseY) * 3;  // Reverse to launch forward and scale to increase the power of the launch
+            float forceX = (startDragX - releaseX) * 2;  // Reverse to launch forward and scale to increase the power of the launch
+            float forceY = (startDragY - releaseY) * 2;  // Reverse to launch forward and scale to increase the power of the launch
 
             // Launch the bird with the calculated force
             currentBird.launch(false, 0, 0, forceX, forceY);
