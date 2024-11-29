@@ -100,7 +100,10 @@ manaswi singh 2023307
 paridhi kotarya 2023367
 
 ---
- 
+ ## **resources**
+ https://angrybirds.fandom.com/wiki/The_Angry_Birds_Movie
+ https://libgdx.com/wiki/start/project-generation
+ https://www.youtube.com/watch?v=Mn5rjsxWH_E&list=PLXY8okVWvwZ2Ph9LKWiNBZ1GRAc_TyDru&index=13
 
 ---
  
