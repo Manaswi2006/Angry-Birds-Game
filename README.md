@@ -3,8 +3,11 @@
 ---
 
 # Angry Birds Game 🐦💥
+![image](https://github.com/user-attachments/assets/45a21424-46b8-416b-8d7b-f23a397dca00)
+
 
 Welcome to the **Angry Birds Game** project! This is a 2D physics-based game inspired by the popular Angry Birds series. In this game, players launch various birds with unique abilities to destroy blocks and defeat pigs.
+![image](https://github.com/user-attachments/assets/eb89b47d-bb93-4da4-8c42-959c63a31b94)
 
 ## **Table of Contents**
 1. [Features](#features)
